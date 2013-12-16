@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Disciplina {
@@ -7,9 +8,15 @@ public class Disciplina {
 	// INFORMATION EXPERT: Disciplinas tem a responsabilidade de saber seus pre-requisitos.	
 	private String nome;
 	private int numeroDeCreditos;
-	private String[] preRequisitos;
+	private List<Disciplina> preRequisitos;
 
-	public Disciplina(String nome, int numeroDeCreditos, String[] preRequisitos) {
+	public Disciplina(String nome, int numeroDeCreditos) {
+		this.nome = nome;
+		this.numeroDeCreditos = numeroDeCreditos;
+		this.preRequisitos = new ArrayList<Disciplina>();
+	}
+	
+	public Disciplina(String nome, int numeroDeCreditos, List<Disciplina> preRequisitos) {
 		this.nome = nome;
 		this.numeroDeCreditos = numeroDeCreditos;
 		this.preRequisitos =  preRequisitos;
@@ -23,7 +30,7 @@ public class Disciplina {
 		return this.numeroDeCreditos;
 	}
 	
-	public String[] getPreRequisitos() {
+	public List<Disciplina> getPreRequisitos() {
 		return this.preRequisitos;
 	}
 	

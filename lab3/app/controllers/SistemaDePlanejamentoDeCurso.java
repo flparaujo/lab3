@@ -41,7 +41,7 @@ public class SistemaDePlanejamentoDeCurso {
 		periodos.add(new Periodo());
 	}
 	
-	public void adicionaDisciplinaAoPeriodo(int i, String nome, int numeroDeCreditos, String[] preRequisitos) {
+	public void adicionaDisciplinaAoPeriodo(int i, String nome, int numeroDeCreditos, List<Disciplina> preRequisitos) {
 		if(preRequisitosSatisfeitos(preRequisitos))
 			periodos.get(i-1).adicionaDisciplina(nome, numeroDeCreditos, preRequisitos);
 	}
@@ -50,21 +50,13 @@ public class SistemaDePlanejamentoDeCurso {
 		return periodos.get(i-1).getNumeroDeCreditos();
 	}
 	
-	private boolean preRequisitosSatisfeitos(String[] preRequisitos) {
-		for(String preRequisito: preRequisitos) {
-			if(disciplinaAlocadaEmPeriodoAnterior(preRequisito))
-				return true;
-		}
-		return false;
-	}
-	
-	private boolean disciplinaAlocadaEmPeriodoAnterior(String nomeDaDisciplina) {
+	private boolean preRequisitosSatisfeitos(List<Disciplina> preRequisito) {
+		boolean result = false;
 		for(Periodo periodo : periodos) {
 			for(Disciplina disciplina: periodo.disciplinasAlocadas()) {
-				if(disciplina.getNome().equals(nomeDaDisciplina))
-					return true;
+				result = disciplina.getPreRequisitos().contains(preRequisito);
 			}
 		}
-		return false;
+		return result;
 	}
 }

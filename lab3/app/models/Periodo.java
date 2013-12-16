@@ -16,8 +16,8 @@ public class Periodo {
 		return disciplinas;
 	}
 
-	public void adicionaDisciplina(String nome, int numeroDeCreditos, String[] preRequisitos) {
-		disciplinas.add(new Disciplina(nome, numeroDeCreditos, null));
+	public void adicionaDisciplina(String nome, int numeroDeCreditos, List<Disciplina> preRequisitos) {
+		disciplinas.add(new Disciplina(nome, numeroDeCreditos, preRequisitos));
 	}
 
 	public int getNumeroDeCreditos() {
