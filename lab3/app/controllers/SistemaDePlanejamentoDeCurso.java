@@ -41,9 +41,9 @@ public class SistemaDePlanejamentoDeCurso {
 		periodos.add(new Periodo());
 	}
 	
-	public void adicionaDisciplinaAoPeriodo(int i, String nome, int numeroDeCreditos, String[] preRequisitos) {
+	public void adicionaDisciplinaAoPeriodo(int periodoID, String nome, int numeroDeCreditos, String[] preRequisitos) {
 		if(preRequisitosSatisfeitos(preRequisitos))
-			periodos.get(i-1).adicionaDisciplina(nome, numeroDeCreditos, preRequisitos);
+			periodos.get(periodoID-1).adicionaDisciplina(nome, numeroDeCreditos, preRequisitos);
 	}
 
 	public int numeroDeCreditosDoPeriodo(int i) {
