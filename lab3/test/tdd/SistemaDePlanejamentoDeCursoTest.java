@@ -20,7 +20,6 @@ public class SistemaDePlanejamentoDeCursoTest {
 
 	@Test
 	public void deveMostrarDisciplinasDoPrimeiroPeriodo() {
-		sistema.primeiroPeriodo();
 		assertEquals(20, sistema.numeroDeCreditosDoPeriodo(1));
 		assertEquals(new Disciplina("Calculo 1", 4, null), sistema.getDisciplinasDoPeriodo(1).get(0));
 		assertEquals(new Disciplina("Algebra Vet. e Geo. Analitica", 4, null), 
