@@ -13,7 +13,7 @@ public class Periodo {
 	}
 	
 	public List<Disciplina> disciplinasAlocadas() {
-		return disciplinas;
+		return this.disciplinas;
 	}
 
 	public void adicionaDisciplina(String nome, int numeroDeCreditos, List<Disciplina> preRequisitos) {

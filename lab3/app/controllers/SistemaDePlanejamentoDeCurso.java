@@ -3,6 +3,7 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import scala.Array;
 import models.Disciplina;
 import models.Periodo;
 
@@ -51,10 +52,12 @@ public class SistemaDePlanejamentoDeCurso {
 	}
 	
 	private boolean preRequisitosSatisfeitos(List<Disciplina> preRequisito) {
-		boolean result = false;
+		boolean result = true;
 		for(Periodo periodo : periodos) {
 			for(Disciplina disciplina: periodo.disciplinasAlocadas()) {
-				result = disciplina.getPreRequisitos().contains(preRequisito);
+				if (disciplina.getPreRequisitos() != null) {
+					result = disciplina.getPreRequisitos().contains(preRequisito);
+				}
 			}
 		}
 		return result;

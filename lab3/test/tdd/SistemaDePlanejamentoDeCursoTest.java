@@ -3,6 +3,7 @@ package tdd;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import models.Disciplina;
@@ -39,7 +40,7 @@ public class SistemaDePlanejamentoDeCursoTest {
 		sistema.adicionaPeriodo();
 		List<Disciplina> prerequisitoCalculo2 = new ArrayList<Disciplina>();
 		sistema.adicionaDisciplinaAoPeriodo(2, "Calculo 2", 4, prerequisitoCalculo2);
-		//assertEquals("Calculo 2", sistema.);
+		assertEquals("[Calculo 2]", Arrays.toString(sistema.getDisciplinasDoPeriodo(2).toArray()));
 	}
 
 }

@@ -43,4 +43,8 @@ public class Disciplina {
 				&& ((Disciplina) obj).getNumeroDeCreditos() == numeroDeCreditos;
 	}
 
+	@Override
+	public String toString() {
+		return getNome();
+	}
 }
