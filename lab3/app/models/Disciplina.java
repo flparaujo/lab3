@@ -7,9 +7,9 @@ public class Disciplina {
 	// INFORMATION EXPERT: Disciplinas tem a responsabilidade de saber seus pre-requisitos.	
 	private String nome;
 	private int numeroDeCreditos;
-	private List<Disciplina> preRequisitos;
+	private String[] preRequisitos;
 
-	public Disciplina(String nome, int numeroDeCreditos, List<Disciplina> preRequisitos) {
+	public Disciplina(String nome, int numeroDeCreditos, String[] preRequisitos) {
 		this.nome = nome;
 		this.numeroDeCreditos = numeroDeCreditos;
 		this.preRequisitos =  preRequisitos;
@@ -23,10 +23,11 @@ public class Disciplina {
 		return this.numeroDeCreditos;
 	}
 	
-	public List<Disciplina> getPreRequisitos() {
+	public String[] getPreRequisitos() {
 		return this.preRequisitos;
 	}
 	
+	@Override
 	public boolean equals(Object obj) {
 		if(!(obj instanceof Disciplina)) {
 			return false;

@@ -36,8 +36,35 @@ public class SistemaDePlanejamentoDeCurso {
 			periodos.get(0).adicionaDisciplina(nome, numeroDeCreditos, null);
 		}	
 	}
+	
+	public void adicionaPeriodo() {
+		periodos.add(new Periodo());
+	}
+	
+	public void adicionaDisciplinaAoPeriodo(int i, String nome, int numeroDeCreditos, String[] preRequisitos) {
+		if(preRequisitosSatisfeitos(preRequisitos))
+			periodos.get(i-1).adicionaDisciplina(nome, numeroDeCreditos, preRequisitos);
+	}
 
 	public int numeroDeCreditosDoPeriodo(int i) {
 		return periodos.get(i-1).getNumeroDeCreditos();
+	}
+	
+	private boolean preRequisitosSatisfeitos(String[] preRequisitos) {
+		for(String preRequisito: preRequisitos) {
+			if(disciplinaAlocadaEmPeriodoAnterior(preRequisito))
+				return true;
+		}
+		return false;
+	}
+	
+	private boolean disciplinaAlocadaEmPeriodoAnterior(String nomeDaDisciplina) {
+		for(Periodo periodo : periodos) {
+			for(Disciplina disciplina: periodo.disciplinasAlocadas()) {
+				if(disciplina.getNome().equals(nomeDaDisciplina))
+					return true;
+			}
+		}
+		return false;
 	}
 }

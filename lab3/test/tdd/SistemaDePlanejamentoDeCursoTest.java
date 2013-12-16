@@ -30,5 +30,10 @@ public class SistemaDePlanejamentoDeCursoTest {
 		assertEquals(new Disciplina("Introducao a Computacao", 4, null), 
 				sistema.getDisciplinasDoPeriodo(1).get(4));
 	}
+	
+	@Test
+	public void deveMostrarListaDasDisciplinasDoCurso() {
+		//assertEquals("Calculo 2", sistema.);
+	}
 
 }
