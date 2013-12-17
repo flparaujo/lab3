@@ -5,15 +5,12 @@ import java.util.*;
 public class GradeCurricular {
 	
 	private List<Disciplina> disciplinas;
-	
+	//CREATOR: grade curricular é feita de disciplinas
 	public GradeCurricular() {
 		disciplinas = new ArrayList<Disciplina>();
+		leDisciplinasDeArquivo();
 	}
-	
-	public void adicionaDisciplina(String nome, int numeroDeCreditos, String[] preRequisitos) {
-		disciplinas.add(new Disciplina(nome, numeroDeCreditos, preRequisitos));
-	}
-	
+		
 	public List<Disciplina> getDisciplinas() {
 		return disciplinas;
 	}
@@ -26,4 +23,7 @@ public class GradeCurricular {
 		return null;
 	}
 
+	public void leDisciplinasDeArquivo () {
+		// fazer ele ler disciplinas de uma arquivo
+	}
 }
