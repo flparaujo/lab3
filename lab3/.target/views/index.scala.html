@@ -12,7 +12,7 @@
 	</div>
 	<br/>	
 	<div id="colunas">
-		@for(disciplina <- sistema.getDisciplinasDoPeriodoAtual()){
+		@for(disciplina <- sistema.getDisciplinasDoPeriodoAtual(){
 			<div id="c1" class="coluna">
 			<div class="disciplina">
 					<nome>@disciplina.getNome() </nome>
@@ -65,8 +65,7 @@
 			}
 		<br>
 		<nome> Total de créditos: @sistema.numeroDeCreditosDoPeriodo(0)</nome>
-	}
+		}
 	</div>
 </div>
-
 }
