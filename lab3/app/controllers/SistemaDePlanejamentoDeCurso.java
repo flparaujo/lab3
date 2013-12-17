@@ -10,6 +10,12 @@ import models.Periodo;
 //CREATOR: classe SistemaDePlanejamentoDeCurso registra objetos do tipo Periodo
 public class SistemaDePlanejamentoDeCurso {
 	
+	private final int minCredito = 12;
+	private final int maxCredito = 28;
+	
+	private boolean maximoCredito = false;
+	private boolean minimoCredito = false;
+	
 	private List<Periodo> periodos;
 	private Periodo periodoAtual;
 	private GradeCurricular grade;
@@ -35,14 +41,25 @@ public class SistemaDePlanejamentoDeCurso {
 		return getPeriodoAtual().disciplinasAlocadas();
 	}
 	
+	public boolean getMaximoCredito() {
+		return this.maximoCredito;
+	}
+	
+	public boolean getMinimoCredito() {
+		if (numeroDeCreditosDoPeriodoAtual() >= 12) {
+			minimoCredito = false;
+		}
+		return this.minimoCredito;
+	}
+	
 	public void adicionaDisciplinaAoPeriodoAtual(String nome, int numeroDeCreditos, List<Disciplina> preRequisitos) {
-		if ((numeroDeCreditosDoPeriodoAtual() + numeroDeCreditos) < 12) {
-			// mostrar q o numero minimo de creditos naum foi atingigo
+		if ((numeroDeCreditosDoPeriodoAtual() + numeroDeCreditos) < minCredito) {
+			minimoCredito = true;
 			adicionarDisciplinaSePreRequisitosSatisfefitos(nome, numeroDeCreditos, preRequisitos);
-		} else if ((numeroDeCreditosDoPeriodoAtual() + numeroDeCreditos)<= 28) {
+		} else if ((numeroDeCreditosDoPeriodoAtual() + numeroDeCreditos)<= maxCredito) {
 			adicionarDisciplinaSePreRequisitosSatisfefitos(nome, numeroDeCreditos, preRequisitos);
 		} else {
-			// mostra messagem q o numero maximo foi atingido
+			maximoCredito = true;
 		}
 	}
 	

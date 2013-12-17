@@ -33,19 +33,28 @@
 		<div id="c8" class="coluna"></div>
 	</div>
 	
+	<br>
 	<right>
 	<div id="gradeCurricular">
-		<br>
-			<nome> Grade Curricular Do Curso</nome>
-		<br>
-		@for(disciplina <- sistema.getGradeCurricular().getDisciplinas()){
-			<div id="c1" class="coluna">
-			<div class="disciplina">
-					<nome>@disciplina.getNome() </nome>
-					<descricao> ---- @disciplina.getNumeroDeCreditos() creditos</descricao>
-			</div>
-			</div>
-		}
+	<table class="tabela" style="float:left;">
+            <tr style="background-color: transparent;">
+                    <th style="border:none;font-size: 20px;"> 
+                            Grade Curricular Do Curso 
+                    </th>
+            </tr>
+                   <tr style="background-color: #8B8B7A;">
+                       <th >Disciplina</td>
+                       <th >Creditos</td>
+                       <th >Requisitos</td>
+               </tr>
+        @for(disciplina <- sistema.getGradeCurricular().getDisciplinas()){
+            <tr>
+                    <td >@disciplina.getNome()</td>
+                    <td >@disciplina.getNumeroDeCreditos()</td>
+                    <td >@disciplina.getPreRequisitos()</td>                
+            </tr>
+        }
+    </table>
 	</div>
 	</right>
 	
@@ -68,6 +77,17 @@
 		<nome> Total de créditos: @sistema.numeroDeCreditosDoPeriodo(0)</nome>
 	}
 	</div>
-</div>
 
+	<div id="novoPeriodo">
+	@if(sistema.getMinimoCredito()) {
+		<br>
+		<nome> Mínimo de creditos não atingido</nome>
+		<br>
+	}
+	
+	@if(sistema.getMaximoCredito()) {
+		<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">alert ("Máximo de Creditos atingido")</SCRIPT>
+	}	
+	</div>
+</div>
 }
