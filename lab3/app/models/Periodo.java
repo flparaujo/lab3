@@ -16,6 +16,10 @@ public class Periodo {
 		return this.disciplinas;
 	}
 
+	public void adicionaDisciplina(String nome, int numeroDeCreditos) {
+		disciplinas.add(new Disciplina(nome, numeroDeCreditos));
+	}
+	
 	public void adicionaDisciplina(String nome, int numeroDeCreditos, List<Disciplina> preRequisitos) {
 		disciplinas.add(new Disciplina(nome, numeroDeCreditos, preRequisitos));
 	}
@@ -26,5 +30,14 @@ public class Periodo {
 			total += disciplina.getNumeroDeCreditos();
 		return total;
 	}
-
+	
+	public boolean preRequisitosSatisfeitos(List<Disciplina> preRequisito) {
+		boolean result = false;
+		for(Disciplina disciplina: disciplinasAlocadas()) {
+			if (preRequisito.contains(disciplina) || disciplina.getPreRequisitos() != null) {
+				result = true;
+			}
+		}
+		return result;
+	}
 }

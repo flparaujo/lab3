@@ -3,7 +3,6 @@ package tdd;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import models.Disciplina;
@@ -25,22 +24,33 @@ public class SistemaDePlanejamentoDeCursoTest {
 	@Test
 	public void deveMostrarDisciplinasDoPrimeiroPeriodo() {
 		assertEquals(20, sistema.numeroDeCreditosDoPeriodo(1));
-		assertEquals(new Disciplina("Calculo 1", 4, null), sistema.getDisciplinasDoPeriodo(1).get(0));
-		assertEquals(new Disciplina("Algebra Vet. e Geo. Analitica", 4, null), 
-				sistema.getDisciplinasDoPeriodo(1).get(1));
-		assertEquals(new Disciplina("Lab. de Programacao 1", 4, null), 
-				sistema.getDisciplinasDoPeriodo(1).get(2));
-		assertEquals(new Disciplina("Programacao 1", 4, null), sistema.getDisciplinasDoPeriodo(1).get(3));
-		assertEquals(new Disciplina("Introducao a Computacao", 4, null), 
-				sistema.getDisciplinasDoPeriodo(1).get(4));
+		assertEquals(new Disciplina("Calculo 1", 4), sistema.getDisciplinasDoPeriodoAtual().get(0));
+		assertEquals(new Disciplina("Algebra Vet. e Geo. Analitica", 4), 
+				sistema.getDisciplinasDoPeriodoAtual().get(1));
+		assertEquals(new Disciplina("Lab. de Programacao 1", 4), 
+				sistema.getDisciplinasDoPeriodoAtual().get(2));
+		assertEquals(new Disciplina("Programacao 1", 4), sistema.getDisciplinasDoPeriodoAtual().get(3));
+		assertEquals(new Disciplina("Introducao a Computacao", 4), 
+				sistema.getDisciplinasDoPeriodoAtual().get(4));
 	}
 	
 	@Test
-	public void deveAdicionarDisciplinaNoPeriodo() {
+	public void deveAdicionarDisciplinaNoPeriodoAtual() {
 		sistema.adicionaPeriodo();
-		List<Disciplina> prerequisitoCalculo2 = new ArrayList<Disciplina>();
-		sistema.adicionaDisciplinaAoPeriodo(2, "Calculo 2", 4, prerequisitoCalculo2);
-		assertEquals("[Calculo 2]", Arrays.toString(sistema.getDisciplinasDoPeriodo(2).toArray()));
+		
+		List<Disciplina> requisito = new ArrayList<>();
+		requisito.add(new Disciplina("Calculo 1", 4));
+		sistema.adicionaDisciplinaAoPeriodoAtual("Calculo 2", 4, requisito);
+		
+		List<Disciplina> calculo2 = new ArrayList<>();
+		calculo2.add(new Disciplina("Calculo 2", 4, requisito));
+		assertEquals(calculo2, sistema.getDisciplinasDoPeriodoAtual());
 	}
 
+	@Test
+	public void deveMostrarTodasAsDisciplinasDaGrade () {
+		List<Disciplina> disciplinas = new ArrayList<>();
+		//adicionar elementos a disciplinas
+		assertEquals(sistema.getGradeCurricular().getDisciplinas(), disciplinas);
+	}
 }
