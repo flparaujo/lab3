@@ -10,9 +10,6 @@ import models.Periodo;
 //CREATOR: classe SistemaDePlanejamentoDeCurso registra objetos do tipo Periodo
 public class SistemaDePlanejamentoDeCurso {
 	
-	private final int minCredito = 12;
-	private final int maxCredito = 28;
-	
 	private boolean maximoCredito = false;
 	private boolean minimoCredito = false;
 	
@@ -28,12 +25,12 @@ public class SistemaDePlanejamentoDeCurso {
 	}
 	
 	// Grande Curricular
-	public GradeCurricular getGradeCurricular () {
-		return this.grade;
+	public List<Disciplina> listaDisciplinasDoCurso() {
+		return grade.getDisciplinas();
 	}
 	
 	// Periodo atual
-	public Periodo getPeriodoAtual () {
+	public Periodo getPeriodoAtual() {
 		return this.periodoAtual;
 	}
 	
@@ -46,17 +43,17 @@ public class SistemaDePlanejamentoDeCurso {
 	}
 	
 	public boolean getMinimoCredito() {
-		if (numeroDeCreditosDoPeriodoAtual() >= 12) {
+		if (numeroDeCreditosDoPeriodoAtual() >= Periodo.MINIMO_DE_CREDITOS) {
 			minimoCredito = false;
 		}
 		return this.minimoCredito;
 	}
 	
-	public void adicionaDisciplinaAoPeriodoAtual(String nome, int numeroDeCreditos, List<Disciplina> preRequisitos) {
-		if ((numeroDeCreditosDoPeriodoAtual() + numeroDeCreditos) < minCredito) {
+	private void adicionaDisciplinaAoPeriodoAtual(String nome, int numeroDeCreditos, List<Disciplina> preRequisitos) {
+		if ((numeroDeCreditosDoPeriodoAtual() + numeroDeCreditos) < Periodo.MINIMO_DE_CREDITOS) {
 			minimoCredito = true;
 			adicionarDisciplinaSePreRequisitosSatisfefitos(nome, numeroDeCreditos, preRequisitos);
-		} else if ((numeroDeCreditosDoPeriodoAtual() + numeroDeCreditos)<= maxCredito) {
+		} else if ((numeroDeCreditosDoPeriodoAtual() + numeroDeCreditos)<= Periodo.MAXIMO_DE_CREDITOS) {
 			adicionarDisciplinaSePreRequisitosSatisfefitos(nome, numeroDeCreditos, preRequisitos);
 		} else {
 			maximoCredito = true;
@@ -77,7 +74,7 @@ public class SistemaDePlanejamentoDeCurso {
 	
 	// Periodos anteriores
 	public List<Periodo> getPeriodosAnteriores () {
-		List<Periodo> result = new ArrayList<>();
+		List<Periodo> result = new ArrayList<Periodo>();
 		for (int i = 0; i < getPeriodos().size()-1; i++) {
 			result.add(periodos.get(i));
 		}
@@ -85,13 +82,13 @@ public class SistemaDePlanejamentoDeCurso {
 	}
 	
 	// 1º Periodo
-	private void primeiroPeriodo () {
+	private void primeiroPeriodo() {
 		getPeriodos().add(new Periodo());
 		alocaDisciplinasDoPrimeiroPeriodo();
 	}
 	
 	private void alocaDisciplinasDoPrimeiroPeriodo() {
-		String[] informacoesDasDisciplinas = {"Calculo 1-4", "Algebra Vet. e Geo. Analitica-4", 
+		String[] informacoesDasDisciplinas = {"Calculo Dif. e Int. 1-4", "Algebra Vet. e Geom. Analitica-4", 
 				"Lab. de Programacao 1-4", "Programacao 1-4", 
 				"Introducao a Computacao-4"};
 		
@@ -108,24 +105,27 @@ public class SistemaDePlanejamentoDeCurso {
 	}
 	
 	public void adicionaPeriodo() {
-		Periodo newPeriodo= new Periodo();
-		getPeriodos().add(newPeriodo);
-		periodoAtual = newPeriodo;
+		Periodo novoPeriodo = new Periodo();
+		getPeriodos().add(novoPeriodo);
+		periodoAtual = novoPeriodo;
 	}
 
 	public int numeroDeCreditosDoPeriodo(int i) {
 		return getPeriodos().get(i-1).getNumeroDeCreditos();
 	}
 	
-	private boolean preRequisitosSatisfeitos(List<Disciplina> preRequisito) {
-		boolean result = false;
-		for(Periodo periodo : getPeriodos()) {
-			if (result != true) {
-				result = periodo.preRequisitosSatisfeitos(preRequisito);
-			} else {
-				break;
+	private boolean preRequisitosSatisfeitos(List<Disciplina> preRequisitos) {
+		for(Periodo periodo : periodos) {
+			for(Disciplina disciplina : preRequisitos) {
+				if(periodo.disciplinasAlocadas().contains(disciplina))
+					return true;
 			}
 		}
-		return result;
+		return false;
+	}
+
+	public void adicionaDisciplinaAoPeriodoAtual(String nome, int numeroDeCreditos) {
+		adicionaDisciplinaAoPeriodoAtual(nome, numeroDeCreditos, 
+				grade.getDisciplina(nome).getPreRequisitos());
 	}
 }

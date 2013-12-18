@@ -2,9 +2,6 @@ package tdd;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import models.Disciplina;
 
 import org.junit.Before;
@@ -24,8 +21,9 @@ public class SistemaDePlanejamentoDeCursoTest {
 	@Test
 	public void deveMostrarDisciplinasDoPrimeiroPeriodo() {
 		assertEquals(20, sistema.numeroDeCreditosDoPeriodo(1));
-		assertEquals(new Disciplina("Calculo 1", 4), sistema.getDisciplinasDoPeriodoAtual().get(0));
-		assertEquals(new Disciplina("Algebra Vet. e Geo. Analitica", 4), 
+		assertEquals(new Disciplina("Calculo Dif. e Int. 1", 4), 
+				sistema.getDisciplinasDoPeriodoAtual().get(0));
+		assertEquals(new Disciplina("Algebra Vet. e Geom. Analitica", 4), 
 				sistema.getDisciplinasDoPeriodoAtual().get(1));
 		assertEquals(new Disciplina("Lab. de Programacao 1", 4), 
 				sistema.getDisciplinasDoPeriodoAtual().get(2));
@@ -37,20 +35,17 @@ public class SistemaDePlanejamentoDeCursoTest {
 	@Test
 	public void deveAdicionarDisciplinaNoPeriodoAtual() {
 		sistema.adicionaPeriodo();
+		sistema.adicionaDisciplinaAoPeriodoAtual("Calculo Dif. e Int. 2", 4);
 		
-		List<Disciplina> requisito = new ArrayList<>();
-		requisito.add(new Disciplina("Calculo 1", 4));
-		sistema.adicionaDisciplinaAoPeriodoAtual("Calculo 2", 4, requisito);
-		
-		List<Disciplina> calculo2 = new ArrayList<>();
-		calculo2.add(new Disciplina("Calculo 2", 4, requisito));
-		assertEquals(calculo2, sistema.getDisciplinasDoPeriodoAtual());
+		assertTrue(sistema.getDisciplinasDoPeriodoAtual().contains(new Disciplina("Calculo " +
+				"Dif. e Int. 2", 4)));
 	}
 
 	@Test
-	public void deveMostrarTodasAsDisciplinasDaGrade () {
-		List<Disciplina> disciplinas = new ArrayList<>();
-		//adicionar elementos a disciplinas
-		assertEquals(sistema.getGradeCurricular().getDisciplinas(), disciplinas);
+	public void naoDeveAlocarDisciplinaAoPeriodoAtual() {
+		sistema.adicionaPeriodo();
+		sistema.adicionaDisciplinaAoPeriodoAtual("Banco de Dados 1", 4);
+		assertFalse(sistema.getDisciplinasDoPeriodoAtual().contains(new 
+				Disciplina("Banco de Dados 1", 4)));
 	}
 }

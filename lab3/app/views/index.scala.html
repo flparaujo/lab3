@@ -1,4 +1,6 @@
-@(sistema: SistemaDePlanejamentoDeCurso)
+@(sistema: SistemaDePlanejamentoDeCurso, taskForm: Form[SistemaDePlanejamentoDeCurso])
+
+@import helper._
 
 @main("Curso de Ciência da Computação") {
 	
@@ -11,7 +13,8 @@
 		<nome> Periodo Atual</nome>
 		<br>
 	</div>
-	<br/>	
+	<br/>
+		
 	<div id="colunas">
 		@for(disciplina <- sistema.getDisciplinasDoPeriodoAtual()){
 			<div id="c1" class="coluna">
@@ -34,6 +37,27 @@
 	</div>
 	
 	<br>
+	@if(sistema.getPeriodos().indexOf(sistema.getPeriodoAtual()) != 0) {
+		<nome> Alocar Disciplina ao período atual</nome>
+		<br>
+		<select name="listaDeDisciplinasAAlocar">
+			@for(disciplina <- sistema.listaDisciplinasDoCurso()) {
+				<option>
+					@disciplina.getNome()
+				</option>
+			}
+		</select>
+	}
+	<br>
+	<br>
+	<div id="addperiodos">
+	@form(routes.Application.novoPeriodo()) {
+       <input type="submit" value="Adicionar periodo">
+    }
+    </div>
+
+	<br>
+	<br>
 	<right>
 	<div id="gradeCurricular">
 	<table class="tabela" style="float:left;">
@@ -47,7 +71,7 @@
                        <th >Creditos</td>
                        <th >Requisitos</td>
                </tr>
-        @for(disciplina <- sistema.getGradeCurricular().getDisciplinas()){
+        @for(disciplina <- sistema.listaDisciplinasDoCurso()){
             <tr>
                     <td >@disciplina.getNome()</td>
                     <td >@disciplina.getNumeroDeCreditos()</td>
@@ -72,12 +96,12 @@
 					</div>
 					</div>
 				}
+			    <nome> Total de créditos: @sistema.numeroDeCreditosDoPeriodo(sistema.getPeriodosAnteriores().indexOf(periodo)+1)</nome>
 			}
 		<br>
-		<nome> Total de créditos: @sistema.numeroDeCreditosDoPeriodo(0)</nome>
 	}
 	</div>
-
+	
 	<div id="novoPeriodo">
 	@if(sistema.getMinimoCredito()) {
 		<br>
