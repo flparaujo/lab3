@@ -20,5 +20,11 @@ public class Application extends Controller {
     	sistema.adicionaPeriodo();
     	return redirect(routes.Application.planejamentoDeCurso());
     }
+    
+    public static Result adicionaDisciplinaNoPeriodoAtual(String nome) {
+    	int numeroDeCreditos = sistema.getDisciplinaDaGrade(nome).getNumeroDeCreditos();
+    	sistema.getPeriodoAtual().adicionaDisciplina(nome, numeroDeCreditos);
+    	return redirect(routes.Application.planejamentoDeCurso());
+    }
 
 }

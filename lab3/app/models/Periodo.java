@@ -7,12 +7,13 @@ import java.util.List;
  * Classe que representa um periodo de curso.
  * 
  * @author Felipe Araujo de Andrade, Franklin Wesley Bastos.
- * @version 1.0
+ * @version 1.1
  */
 public class Periodo {
 	
 	//CREATOR: classe Periodo registra objetos do tipo Disciplina
 	private List<Disciplina> disciplinas;
+	private boolean ultrapassaLimiteMaximo;
 	
 	/**
 	 * Constante que representa o numero minimo de creditos que um periodo deve conter.
@@ -39,12 +40,28 @@ public class Periodo {
 		return this.disciplinas;
 	}
 
+	/**
+	 * Adiciona uma disciplina a este periodo.
+	 * @param nome O nome da disciplina a ser adicionada.
+	 * @param numeroDeCreditos O numero de creditos da disciplina a ser adicionada.
+	 */
 	public void adicionaDisciplina(String nome, int numeroDeCreditos) {
-		disciplinas.add(new Disciplina(nome, numeroDeCreditos));
+		adicionaDisciplina(nome, numeroDeCreditos, new ArrayList<Disciplina>());
 	}
 	
+	/**
+	 * Adiciona uma disciplina a este periodo.
+	 * @param nome O nome da disciplina.
+	 * @param numeroDeCreditos O numero de creditos da disciplina.
+	 * @param preRequisitos A lista contendo as disciplinas pre-requisito da disciplina a ser adicionada.
+	 */
 	public void adicionaDisciplina(String nome, int numeroDeCreditos, List<Disciplina> preRequisitos) {
-		disciplinas.add(new Disciplina(nome, numeroDeCreditos, preRequisitos));
+		if ((getNumeroDeCreditos() + numeroDeCreditos) <= Periodo.MAXIMO_DE_CREDITOS) {
+			disciplinas.add(new Disciplina(nome, numeroDeCreditos, preRequisitos));
+			ultrapassaLimiteMaximo = false;
+		} else {
+			ultrapassaLimiteMaximo = true;
+		}
 	}
 
 	/**
@@ -57,5 +74,15 @@ public class Periodo {
 			total += disciplina.getNumeroDeCreditos();
 		return total;
 	}
-	
+
+	/**
+	 * @return
+	 */
+	public boolean acimaDoLimiteMaximoDeCreditos() {
+		return this.ultrapassaLimiteMaximo;
+	}
+
+	public boolean abaixoDoLimiteMinimoDeCreditos() {
+		return getNumeroDeCreditos() < Periodo.MINIMO_DE_CREDITOS;
+	}
 }

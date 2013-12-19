@@ -10,9 +10,6 @@ import models.Periodo;
 //CREATOR: classe SistemaDePlanejamentoDeCurso registra objetos do tipo Periodo
 public class SistemaDePlanejamentoDeCurso {
 	
-	private boolean maximoCredito = false;
-	private boolean minimoCredito = false;
-	
 	private List<Periodo> periodos;
 	private Periodo periodoAtual;
 	private GradeCurricular grade;
@@ -38,26 +35,16 @@ public class SistemaDePlanejamentoDeCurso {
 		return getPeriodoAtual().disciplinasAlocadas();
 	}
 	
-	public boolean getMaximoCredito() {
-		return this.maximoCredito;
+	public boolean getMinimoCreditosDoPeriodoAtual() {
+		return periodoAtual.abaixoDoLimiteMinimoDeCreditos();
 	}
 	
-	public boolean getMinimoCredito() {
-		if (numeroDeCreditosDoPeriodoAtual() >= Periodo.MINIMO_DE_CREDITOS) {
-			minimoCredito = false;
-		}
-		return this.minimoCredito;
+	public boolean getMaximoCreditosDoPeriodoAtual() {
+		return periodoAtual.acimaDoLimiteMaximoDeCreditos();
 	}
 	
 	private void adicionaDisciplinaAoPeriodoAtual(String nome, int numeroDeCreditos, List<Disciplina> preRequisitos) {
-		if ((numeroDeCreditosDoPeriodoAtual() + numeroDeCreditos) < Periodo.MINIMO_DE_CREDITOS) {
-			minimoCredito = true;
-			adicionarDisciplinaSePreRequisitosSatisfefitos(nome, numeroDeCreditos, preRequisitos);
-		} else if ((numeroDeCreditosDoPeriodoAtual() + numeroDeCreditos)<= Periodo.MAXIMO_DE_CREDITOS) {
-			adicionarDisciplinaSePreRequisitosSatisfefitos(nome, numeroDeCreditos, preRequisitos);
-		} else {
-			maximoCredito = true;
-		}
+		adicionarDisciplinaSePreRequisitosSatisfefitos(nome, numeroDeCreditos, preRequisitos);
 	}
 	
 	private void adicionarDisciplinaSePreRequisitosSatisfefitos(String nome, int numeroDeCreditos, List<Disciplina> preRequisitos) {
@@ -106,8 +93,10 @@ public class SistemaDePlanejamentoDeCurso {
 	
 	public void adicionaPeriodo() {
 		Periodo novoPeriodo = new Periodo();
-		getPeriodos().add(novoPeriodo);
-		periodoAtual = novoPeriodo;
+		if(!getPeriodoAtual().abaixoDoLimiteMinimoDeCreditos()) {
+			getPeriodos().add(novoPeriodo);
+			periodoAtual = novoPeriodo;
+		}
 	}
 
 	public int numeroDeCreditosDoPeriodo(int i) {
@@ -125,7 +114,13 @@ public class SistemaDePlanejamentoDeCurso {
 	}
 
 	public void adicionaDisciplinaAoPeriodoAtual(String nome, int numeroDeCreditos) {
-		adicionaDisciplinaAoPeriodoAtual(nome, numeroDeCreditos, 
+		if(grade.getDisciplina(nome) != null) {
+			adicionaDisciplinaAoPeriodoAtual(nome, numeroDeCreditos, 
 				grade.getDisciplina(nome).getPreRequisitos());
+		}
+	}
+
+	public Disciplina getDisciplinaDaGrade(String nome) {
+		return grade.getDisciplina(nome);
 	}
 }

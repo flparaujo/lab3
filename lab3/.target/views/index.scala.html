@@ -14,14 +14,7 @@
 		<br>
 	</div>
 	<br/>
-	<br>
-	<select name="listaDeDisciplinasAAlocar">
-		@for(disciplina <- sistema.listaDisciplinasDoCurso()) {
-			<option>
-				@disciplina.getNome()
-			</option>
-		}
-	</select>	
+		
 	<div id="colunas">
 		@for(disciplina <- sistema.getDisciplinasDoPeriodoAtual()){
 			<div id="c1" class="coluna">
@@ -42,6 +35,36 @@
 		<div id="c7" class="coluna"></div>
 		<div id="c8" class="coluna"></div>
 	</div>
+	
+	<br>
+	<div id="alocarDisciplina">
+	@if(sistema.getPeriodos().indexOf(sistema.getPeriodoAtual()) != 0) {
+		<nome> Alocar Disciplina ao período atual</nome>
+		<br>
+		<select name="listaDeDisciplinasAAlocar">
+			@for(disciplina <- sistema.listaDisciplinasDoCurso()) {
+				<option>
+					@disciplina.getNome()
+				</option>	
+			}
+		</select>
+		@form(routes.Application.adicionaDisciplinaNoPeriodoAtual("Teoria dos Grafos")){
+				<input type="submit" value="alocar disciplina">
+		}
+		@if(sistema.getMinimoCreditosDoPeriodoAtual()) {
+		<br>
+		<nome> Mínimo de creditos não atingido</nome>
+		<br>
+		}
+	
+		@if(sistema.getMaximoCreditosDoPeriodoAtual()) {
+			<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">alert ("Máximo de Creditos atingido")</SCRIPT>
+		}
+	}
+	</div>
+	<br>
+	<br>
+	
 	<div id="addperiodos">
 	@form(routes.Application.novoPeriodo()) {
        <input type="submit" value="Adicionar periodo">
@@ -92,18 +115,6 @@
 			}
 		<br>
 	}
-	</div>
-	
-	<div id="novoPeriodo">
-	@if(sistema.getMinimoCredito()) {
-		<br>
-		<nome> Mínimo de creditos não atingido</nome>
-		<br>
-	}
-	
-	@if(sistema.getMaximoCredito()) {
-		<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">alert ("Máximo de Creditos atingido")</SCRIPT>
-	}	
 	</div>
 </div>
 }

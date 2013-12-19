@@ -2,22 +2,40 @@ package models;
 
 import java.util.*;
 
+/**
+ * Classe que representa a grade curricular do curso.
+ * 
+ * @author Felipe Araujo de Andrade
+ * @version 1.1
+ */
 public class GradeCurricular {
 	
 	private LeitorDeDisciplinas leitorDeDisciplinas;
 	private List<Disciplina> disciplinas;
 	
 	//CREATOR: grade curricular é feita de disciplinas
+	/**
+	 * Construtor da grade curricular.
+	 */
 	public GradeCurricular() {
 		disciplinas = new ArrayList<Disciplina>();
-		leitorDeDisciplinas = new LeitorDeDisciplinas();
+		leitorDeDisciplinas = LeitorDeDisciplinas.getInstance();
 		geraDisciplinas();
 	}
 		
+	/**
+	 * Obtem a lista contendo todas as disciplinas desta grade curricular.
+	 * @return uma lista com as disciplinas da grade.
+	 */
 	public List<Disciplina> getDisciplinas() {
 		return disciplinas;
 	}
 	
+	/**
+	 * Obtem uma disciplina qualquer da grade curricular.
+	 * @param nome O nome da disciplina a ser obtida.
+	 * @return A disciplina, se estiver na grade. Caso contrário, retorna null.
+	 */
 	public Disciplina getDisciplina(String nome) {
 		for(Disciplina disciplina: disciplinas) {
 			if(disciplina.getNome().equals(nome))

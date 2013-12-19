@@ -3,6 +3,12 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe que representa uma disciplina.
+ * 
+ * @author Felipe Araujo de Andrade, Franklin Wesley Bastos.
+ * @version 1.0
+ */
 public class Disciplina {
 	
 	// INFORMATION EXPERT: Disciplinas tem a responsabilidade de saber seus pre-requisitos.	
@@ -10,30 +16,57 @@ public class Disciplina {
 	private int numeroDeCreditos;
 	private List<Disciplina> preRequisitos;
 
+	/**
+	 * Construtor de uma disciplina.
+	 * Constroi uma disciplina sem pre-requisitos.
+	 * @param nome O nome da disciplina.
+	 * @param numeroDeCreditos O numero de creditos da disciplina.
+	 */
 	public Disciplina(String nome, int numeroDeCreditos) {
-		this.nome = nome;
-		this.numeroDeCreditos = numeroDeCreditos;
-		this.preRequisitos = new ArrayList<Disciplina>();
+		this(nome, numeroDeCreditos, new ArrayList<Disciplina> ());
 	}
 	
+	/**
+	 * Construtor de uma disciplina.
+	 * @param nome O nome da disciplina.
+	 * @param numeroDeCreditos O numero de creditos da disciplina.
+	 * @param preRequisitos A lista de disciplinas pre-requisitos da disciplina.
+	 */
 	public Disciplina(String nome, int numeroDeCreditos, List<Disciplina> preRequisitos) {
 		this.nome = nome;
 		this.numeroDeCreditos = numeroDeCreditos;
 		this.preRequisitos =  preRequisitos;
 	}
 
+	/**
+	 * Recupera o nome da disciplina.
+	 * @return o nome da disciplina.
+	 */
 	public String getNome() {
 		return this.nome;
 	}
 
+	/**
+	 * Recupera o numero de creditos da disciplina.
+	 * @return o numero de creditos da disciplina.
+	 */
 	public int getNumeroDeCreditos() {
 		return this.numeroDeCreditos;
 	}
 	
+	/**
+	 * Recupera a lista de disciplinas pre-requisito da disciplina.
+	 * @return a lista contendo as disciplinas pre-requisito.
+	 */
 	public List<Disciplina> getPreRequisitos() {
 		return this.preRequisitos;
 	}
 	
+	/**
+	 * Verifica a igualdade entre esta disciplina e outra.
+	 * Duas disciplinas sao iguais se possuem o mesmo nome e numero de creditos.
+	 * @return true se as disciplinas sao identicas, false caso contrario.
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if(!(obj instanceof Disciplina)) {

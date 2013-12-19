@@ -48,4 +48,9 @@ public class SistemaDePlanejamentoDeCursoTest {
 		assertFalse(sistema.getDisciplinasDoPeriodoAtual().contains(new 
 				Disciplina("Banco de Dados 1", 4)));
 	}
+	
+	@Test
+	public void deveMostrarCreditosDeDisciplinaDeQualquerPeriodo() {
+		assertEquals(2, sistema.getDisciplinaDaGrade("Teoria dos Grafos").getNumeroDeCreditos());
+	}
 }

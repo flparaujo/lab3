@@ -13,7 +13,7 @@ public class leitorDeDisciplinasTest {
 
 	@Before
 	public void setUp() throws Exception {
-		leitorDeDisciplinas = new LeitorDeDisciplinas();
+		leitorDeDisciplinas = LeitorDeDisciplinas.getInstance();
 	}
 
 	@Test
