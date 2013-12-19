@@ -31,10 +31,10 @@ public class LeitorDeDisciplinas {
 			String line;
 			while ((line = inputStream.readLine()) != null) {
 				String[] dados = line.split(", ");
-				mapa.put(dados[0]+"-"+dados[1], new ArrayList<String> ());
+				mapa.put(dados[0]+"-"+dados[1]+"-"+dados[3], new ArrayList<String> ());
 				String[] nomesDosPreRequisitos = dados[6].split("-");
 				for(String nomeDoPreRequisito : nomesDosPreRequisitos) {
-					mapa.get(dados[0]+"-"+dados[1]).add(nomeDoPreRequisito);
+					mapa.get(dados[0]+"-"+dados[1]+"-"+dados[3]).add(nomeDoPreRequisito);
 				}
 			}
 		} 

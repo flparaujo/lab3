@@ -7,13 +7,14 @@ public class Application extends Controller {
 	
 	static SistemaDePlanejamentoDeCurso sistema = new SistemaDePlanejamentoDeCurso();
 	static Form<SistemaDePlanejamentoDeCurso> taskForm = Form.form(SistemaDePlanejamentoDeCurso.class);
+	static Form<Teste> taskFormTeste = Form.form(Teste.class);
 
     public static Result index() {
     	return redirect(routes.Application.planejamentoDeCurso());
     }
     
     public static Result planejamentoDeCurso() {
-    	return ok(views.html.index.render(sistema, taskForm));
+    	return ok(views.html.index.render(sistema, taskForm, taskFormTeste));
     }
     
     public static Result novoPeriodo() {
@@ -21,9 +22,10 @@ public class Application extends Controller {
     	return redirect(routes.Application.planejamentoDeCurso());
     }
     
-    public static Result adicionaDisciplinaNoPeriodoAtual(String nome) {
-    	int numeroDeCreditos = sistema.getDisciplinaDaGrade(nome).getNumeroDeCreditos();
-    	sistema.getPeriodoAtual().adicionaDisciplina(nome, numeroDeCreditos);
+    public static Result adicionaDisciplinaNoPeriodoAtual() {
+    	Form<Teste> form = taskFormTeste.bindFromRequest();
+    	int numeroDeCreditos = sistema.getDisciplinaDaGrade(form.get().teste).getNumeroDeCreditos();
+    	sistema.getPeriodoAtual().adicionaDisciplina(form.get().teste, numeroDeCreditos);
     	return redirect(routes.Application.planejamentoDeCurso());
     }
 

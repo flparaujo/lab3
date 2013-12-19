@@ -1,0 +1,17 @@
+adicionar disciplina selecionda da lista no periodo, e atualizar a cada adição //incompleto
+so eh permitido criar periodos se o minimo de creditos foi atingindo
+
+
+historia 3
+ate o 10º periodo precisa ter todas as obrigatorias ate o 5ºperiodo (grade), os optativas de outros departamentos e 6 tecc.
+ -adicionar listas com o nome de periodos em grade
+ -adicionar atributos em disicplinas, tipo (Enum), departamento (Enum)
+ -obrigar a fazer a espeicificação acima. (atrasez do total de creditos)
+ -mostrar no quinto periodo a obrigação a cumprir
+http://www.computacao.ufcg.edu.br/graduacao/topicos-especiais-em-ciencia-da-computacao
+https://docs.google.com/spreadsheet/pub?key=0Av94ash-JfI8dHQ2WVVUM1Vfd2JndlQtOElsMWxVdHc&gid=2
+
+
+
+fazer as prerequisitos das disciplinas ter prerequisistos
+atualizar grade com todas as sdisciplinas do curso

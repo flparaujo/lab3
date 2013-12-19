@@ -8,7 +8,7 @@ GET     /                           controllers.Application.index()
 # Disciplinas
 GET     /planejamentoDeCurso        controllers.Application.planejamentoDeCurso()
 POST    /planejamentoDeCurso/novoPeriodo                controllers.Application.novoPeriodo()
-POST    /planejamentoDeCurso/:nome/adicionaDisciplinaNoPeriodoAtual   controllers.Application.adicionaDisciplinaNoPeriodoAtual(nome: String)
+POST    /planejamentoDeCurso/adicionaDisciplinaNoPeriodoAtual   controllers.Application.adicionaDisciplinaNoPeriodoAtual()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
