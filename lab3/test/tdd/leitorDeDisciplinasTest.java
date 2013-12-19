@@ -18,8 +18,8 @@ public class leitorDeDisciplinasTest {
 
 	@Test
 	public void deveMostrarInformacoesDeDisciplinasDoArquivoOrdenadas() {
-		assertEquals("Administracao-4-OPTATIVA", leitorDeDisciplinas.getInformacoesDasDisciplinas()[0]);
-		assertEquals("Compiladores-4-OBRIGATORIA", leitorDeDisciplinas.getInformacoesDasDisciplinas()[11]);
+		assertEquals("Administracao-4", leitorDeDisciplinas.getInformacoesDasDisciplinas()[0]);
+		assertEquals("Compiladores-4", leitorDeDisciplinas.getInformacoesDasDisciplinas()[11]);
 	}
 	
 	@Test

@@ -6,7 +6,6 @@ import play.mvc.*;
 public class Application extends Controller {
 	
 	static SistemaDePlanejamentoDeCurso sistema = new SistemaDePlanejamentoDeCurso();
-	static Form<SistemaDePlanejamentoDeCurso> taskForm = Form.form(SistemaDePlanejamentoDeCurso.class);
 	static Form<Teste> taskFormTeste = Form.form(Teste.class);
 
     public static Result index() {
@@ -14,7 +13,7 @@ public class Application extends Controller {
     }
     
     public static Result planejamentoDeCurso() {
-    	return ok(views.html.index.render(sistema, taskForm, taskFormTeste));
+    	return ok(views.html.index.render(sistema, taskFormTeste));
     }
     
     public static Result novoPeriodo() {

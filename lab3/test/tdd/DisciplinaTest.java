@@ -2,7 +2,6 @@ package tdd;
 
 import static org.junit.Assert.*;
 import models.Disciplina;
-import models.Tipo;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +19,7 @@ public class DisciplinaTest {
 	public void testaConstrutor() {
 		assertEquals("Programacao 1", disciplina.getNome());
 		assertEquals(4, disciplina.getNumeroDeCreditos());
-		assertEquals(Tipo.OBRIGATORIA, disciplina.getTipo());
+		
 	}
 	
 	//@Test

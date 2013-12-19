@@ -15,7 +15,6 @@ public class Disciplina {
 	private String nome;
 	private int numeroDeCreditos;
 	private List<Disciplina> preRequisitos;
-	private Tipo tipo;
 
 	/**
 	 * Construtor de uma disciplina.
@@ -37,7 +36,6 @@ public class Disciplina {
 		this.nome = nome;
 		this.numeroDeCreditos = numeroDeCreditos;
 		this.preRequisitos =  preRequisitos;
-		this.tipo = Tipo.OBRIGATORIA;
 	}
 
 	/**
@@ -46,10 +44,6 @@ public class Disciplina {
 	 */
 	public String getNome() {
 		return this.nome;
-	}
-	
-	public void setTipo(Tipo tipo) {
-		this.tipo = tipo;
 	}
 
 	/**
@@ -85,9 +79,5 @@ public class Disciplina {
 	@Override
 	public String toString() {
 		return getNome();
-	}
-
-	public Tipo getTipo() {
-		return tipo;
 	}
 }
