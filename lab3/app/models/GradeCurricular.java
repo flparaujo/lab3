@@ -43,6 +43,15 @@ public class GradeCurricular {
 		}
 		return null;
 	}
+	
+	public Disciplina removeDisciplina(String nome) {
+		for(Disciplina disciplina : disciplinas) {
+			if(disciplina.getNome().equals(nome)) {
+				return disciplinas.remove(disciplinas.indexOf(disciplina));
+			}
+		}
+		return null;
+	}
 
 	private void geraDisciplinas() {
 		List<Disciplina> preRequisitos;

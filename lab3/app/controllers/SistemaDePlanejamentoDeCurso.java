@@ -15,9 +15,9 @@ public class SistemaDePlanejamentoDeCurso {
 	
 	public SistemaDePlanejamentoDeCurso() {
 		this.periodos = new ArrayList <Periodo>();
-		primeiroPeriodo();
-		this.periodoAtual = periodos.get(periodos.size() - 1);
 		this.grade = new GradeCurricular();
+		primeiroPeriodo(); //Obs.: So chame apos criar a grade e antes de criar outro periodo!!
+		this.periodoAtual = periodos.get(periodos.size() - 1);
 	}
 	
 	// Grande Curricular
@@ -70,14 +70,14 @@ public class SistemaDePlanejamentoDeCurso {
 	}
 	
 	private void alocaDisciplinasDoPrimeiroPeriodo() {
-		String[] informacoesDasDisciplinas = {"Calculo Dif. e Int. 1-4", "Algebra Vet. e Geom. Analitica-4", 
-				"Lab. de Programacao 1-4", "Programacao 1-4", 
-				"Introducao a Computacao-4"};
+		String[] nomesDasDisciplinas = {"Calculo Dif. e Int. 1", "Algebra Vet. e Geom. Analitica", 
+				"Lab. de Programacao 1", "Programacao 1", 
+				"Introducao a Computacao"};
 		
-		for(String informacao : informacoesDasDisciplinas) {
-			String nome = informacao.split("-")[0];
-			int numeroDeCreditos = Integer.parseInt(informacao.split("-")[1]);
+		for(String nome : nomesDasDisciplinas) {
+			int numeroDeCreditos = grade.getDisciplina(nome).getNumeroDeCreditos();
 			getPeriodos().get(0).adicionaDisciplina(nome, numeroDeCreditos);
+			grade.removeDisciplina(nome);
 		}	
 	}
 	
@@ -118,6 +118,7 @@ public class SistemaDePlanejamentoDeCurso {
 	public void adicionaDisciplinaAoPeriodoAtual(String nome, int numeroDeCreditos) {
 		if(grade.getDisciplina(nome) != null) {
 			adicionarDisciplinaSePreRequisitosSatisfefitos(nome, numeroDeCreditos, grade.getDisciplina(nome).getPreRequisitos());
+			grade.removeDisciplina(nome);
 		}
 	}
 
