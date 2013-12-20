@@ -42,12 +42,13 @@ public class SistemaDePlanejamentoDeCurso {
 		return periodoAtual.acimaDoLimiteMaximoDeCreditos();
 	}
 	
-	private void adicionarDisciplinaSePreRequisitosSatisfefitos(String nome, int numeroDeCreditos, List<Disciplina> preRequisitos) {
+	private boolean adicionarDisciplinaSePreRequisitosSatisfefitos(String nome, int numeroDeCreditos, List<Disciplina> preRequisitos) {
 		if (preRequisitosSatisfeitos(preRequisitos)) {	
-			getPeriodoAtual().adicionaDisciplina(nome, numeroDeCreditos, preRequisitos);
+			return getPeriodoAtual().adicionaDisciplina(nome, numeroDeCreditos, preRequisitos);
 		} else {
 			// mostrar q prerequisitos naum foram satisfeitos
 		}
+		return false;
 	}
 	
 	public int numeroDeCreditosDoPeriodoAtual() {
@@ -117,8 +118,10 @@ public class SistemaDePlanejamentoDeCurso {
 
 	public void adicionaDisciplinaAoPeriodoAtual(String nome, int numeroDeCreditos) {
 		if(grade.getDisciplina(nome) != null) {
-			adicionarDisciplinaSePreRequisitosSatisfefitos(nome, numeroDeCreditos, grade.getDisciplina(nome).getPreRequisitos());
-			grade.removeDisciplina(nome);
+			if(adicionarDisciplinaSePreRequisitosSatisfefitos(nome, numeroDeCreditos, 
+					grade.getDisciplina(nome).getPreRequisitos())) {
+				grade.removeDisciplina(nome);
+			}
 		}
 	}
 

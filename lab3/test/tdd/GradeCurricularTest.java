@@ -32,11 +32,5 @@ public class GradeCurricularTest {
 		assertEquals(new Disciplina("Teoria da Computacao", 4), gradeCurricular.
 				getDisciplina("Teoria da Computacao"));
 	}
-	
-	@Test
-	public void preRequisitosTemPreRequisitos() {
-		assertEquals(new Disciplina("Programacao 1", 4), gradeCurricular.
-				getDisciplina("Programacao 2").getPreRequisitos().get(0));
-	}
-	
+
 }

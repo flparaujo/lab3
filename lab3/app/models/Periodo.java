@@ -54,17 +54,19 @@ public class Periodo {
 	 * @param nome O nome da disciplina.
 	 * @param numeroDeCreditos O numero de creditos da disciplina.
 	 * @param preRequisitos A lista contendo as disciplinas pre-requisito da disciplina a ser adicionada.
+	 * @return true se a disciplina foi adicionada, false caso contrario.
 	 */
-	public void adicionaDisciplina(String nome, int numeroDeCreditos, List<Disciplina> preRequisitos) {
+	public boolean adicionaDisciplina(String nome, int numeroDeCreditos, List<Disciplina> preRequisitos) {
 		Disciplina disciplina = new Disciplina(nome, numeroDeCreditos, preRequisitos);
 		if (!disciplinas.contains(disciplina)) {
 			if ((getNumeroDeCreditos() + numeroDeCreditos) <= Periodo.MAXIMO_DE_CREDITOS) {
-				disciplinas.add(disciplina);
 				ultrapassaLimiteMaximo = false;
+				return disciplinas.add(disciplina);
 			} else {
 				ultrapassaLimiteMaximo = true;
 			}
 		}
+		return false;
 	}
 
 	/**

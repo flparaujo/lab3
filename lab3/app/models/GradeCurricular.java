@@ -60,7 +60,8 @@ public class GradeCurricular {
 			String nome = info.split("-")[0];
 			int numeroDeCreditos = leitorDeDisciplinas.getNumeroDeCreditosDeDisciplina(nome);
 			for(String nomeDePreRequisto : leitorDeDisciplinas.getNomesDosPreRequisitosDeDisciplina(nome)) {
-				preRequisitos.add(getDisciplina(nomeDePreRequisto));
+				preRequisitos.add(new Disciplina(nomeDePreRequisto, 
+						leitorDeDisciplinas.getNumeroDeCreditosDeDisciplina(nomeDePreRequisto)));
 			}
 			Disciplina disciplina = new Disciplina(nome, numeroDeCreditos, preRequisitos);
 			disciplinas.add(disciplina);
