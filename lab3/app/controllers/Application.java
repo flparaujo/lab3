@@ -1,20 +1,19 @@
 package controllers;
 
-import models.FormHandler;
 import play.data.Form;
 import play.mvc.*;
 
 public class Application extends Controller {
 	
 	static SistemaDePlanejamentoDeCurso sistema = new SistemaDePlanejamentoDeCurso();
-	static Form<FormHandler> handlerForm = Form.form(FormHandler.class);
+	static Form<Teste> taskFormTeste = Form.form(Teste.class);
 
     public static Result index() {
     	return redirect(routes.Application.planejamentoDeCurso());
     }
     
     public static Result planejamentoDeCurso() {
-    	return ok(views.html.index.render(sistema, handlerForm));
+    	return ok(views.html.index.render(sistema, taskFormTeste));
     }
     
     public static Result novoPeriodo() {
@@ -23,9 +22,9 @@ public class Application extends Controller {
     }
     
     public static Result adicionaDisciplinaNoPeriodoAtual() {
-    	Form<FormHandler> form = handlerForm.bindFromRequest();
-    	int numeroDeCreditos = sistema.getDisciplinaDaGrade(form.get().getNomeDisciplina()).getNumeroDeCreditos();
-    	sistema.getPeriodoAtual().adicionaDisciplina(form.get().getNomeDisciplina(), numeroDeCreditos);
+    	Form<Teste> form = taskFormTeste.bindFromRequest();
+    	int numeroDeCreditos = sistema.getDisciplinaDaGrade(form.get().teste).getNumeroDeCreditos();
+    	sistema.adicionaDisciplinaAoPeriodoAtual(form.get().teste, numeroDeCreditos);
     	return redirect(routes.Application.planejamentoDeCurso());
     }
 

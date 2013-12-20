@@ -8,7 +8,7 @@ Matematica Discreta, 4, 3, OBRIGATORIA, Convencional, 1, -
 Gerencia da Informacao, 4, 3, OBRIGATORIA, Convencional, 1, -
 Informatica e Sociedade, 2, 2, OBRIGATORIA, Convencional, 1, -
 Direito e Cidadania, 4, 3, OBRIGATORIA, Convencional, 1, -
-Programacao 2, 4, 3, OBRIGATORIA, Convencional, 1, Programacao 1-Lab. de Programacao 1-Introducao a Computacao
+Programacao2, 4, 3, OBRIGATORIA, Convencional, 1, Programacao 1-Lab. de Programacao 1-Introducao a Computacao
 Lab. de Programacao 2, 4, 5, OBRIGATORIA, ComEliminacao, 1, Programacao 1-Lab. de Programacao 1-Introducao a Computacao
 Teoria dos Grafos, 2, 2, OBRIGATORIA, Convencional, 1, Programacao 1-Lab. de Programacao 1
 Calculo Dif. e Int. 2, 4, 3, OBRIGATORIA, Convencional, 1, Calculo Dif. e Int. 1-

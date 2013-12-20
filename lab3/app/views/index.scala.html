@@ -1,4 +1,4 @@
-@(sistema: SistemaDePlanejamentoDeCurso, handlerForm: Form[FormHandler])
+@(sistema: SistemaDePlanejamentoDeCurso, taskFormTeste: Form[Teste])
 
 @import helper._
 
@@ -42,14 +42,12 @@
 		@form(routes.Application.adicionaDisciplinaNoPeriodoAtual()){
 			<nome> Alocar Disciplina ao período atual</nome>
 			<br>
-			<select> 
-				@for(disciplina <- sistema.listaDisciplinasDoCurso()) { 
-					<option value=@sistema.listaDisciplinasDoCurso.indexOf(disciplina)>@disciplina.getNome()
-					</option> 
-					<field>taskFormTeste("nomeDisciplina")</field>
-				} 
-			</select> 
-			<input type="submit" value="alocar disciplina"> 
+			<select class="span1" name="teste" >
+        		@for(disciplina <- sistema.listaDisciplinasDoCurso()) { 
+					<option value="@disciplina.getNome()" name="teste" >@disciplina.getNome()</option> 
+				}
+				<input type="submit" value="alocar disciplina">
+            </select>  
 		}
 		@if(sistema.getMinimoCreditosDoPeriodoAtual()) {
 		<br>
