@@ -7,7 +7,6 @@ import models.Disciplina;
 import models.GradeCurricular;
 import models.Periodo;
 
-//CREATOR: classe SistemaDePlanejamentoDeCurso registra objetos do tipo Periodo
 public class SistemaDePlanejamentoDeCurso {
 	
 	private List<Periodo> periodos;
@@ -87,6 +86,7 @@ public class SistemaDePlanejamentoDeCurso {
 		return this.periodos;
 	}
 	
+	//CREATOR: classe SistemaDePlanejamentoDeCurso registra objetos do tipo Periodo
 	public void adicionaPeriodo() {
 		Periodo novoPeriodo = new Periodo();
 		if(!getPeriodoAtual().abaixoDoLimiteMinimoDeCreditos()) {
