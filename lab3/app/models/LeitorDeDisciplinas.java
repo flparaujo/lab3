@@ -52,6 +52,7 @@ public class LeitorDeDisciplinas {
 	 * Obtem uma unica instancia deste leitor de disciplinas.
 	 * @return o leitor de disciplinas instanciado.
 	 */
+	//PADRAO SINGLETON - A classe LeitorDeDisciplinas deve ser instanciada uma unica vez.
 	public static LeitorDeDisciplinas getInstance() {
 		if(instancia == null) {
 			instancia = new LeitorDeDisciplinas();
