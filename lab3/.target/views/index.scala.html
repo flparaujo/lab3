@@ -1,4 +1,4 @@
-@(sistema: SistemaDePlanejamentoDeCurso, taskFormTeste: Form[Teste])
+@(sistema: SistemaDePlanejamentoDeCurso, handlerForm: Form[FormHandler])
 
 @import helper._
 
@@ -46,7 +46,7 @@
 				@for(disciplina <- sistema.listaDisciplinasDoCurso()) { 
 					<option value=@sistema.listaDisciplinasDoCurso.indexOf(disciplina)>@disciplina.getNome()
 					</option> 
-					<field>taskFormTeste("teste")</field>
+					<field>taskFormTeste("nomeDisciplina")</field>
 				} 
 			</select> 
 			<input type="submit" value="alocar disciplina"> 
