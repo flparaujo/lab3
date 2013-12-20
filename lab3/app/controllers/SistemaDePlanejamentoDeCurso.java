@@ -44,7 +44,11 @@ public class SistemaDePlanejamentoDeCurso {
 	}
 	
 	private void adicionarDisciplinaSePreRequisitosSatisfefitos(String nome, int numeroDeCreditos, List<Disciplina> preRequisitos) {
+		if (preRequisitosSatisfeitos(preRequisitos)) {	
 			getPeriodoAtual().adicionaDisciplina(nome, numeroDeCreditos, preRequisitos);
+		} else {
+			// mostrar q prerequisitos naum foram satisfeitos
+		}
 	}
 	
 	public int numeroDeCreditosDoPeriodoAtual() {
@@ -97,11 +101,16 @@ public class SistemaDePlanejamentoDeCurso {
 	
 	private boolean preRequisitosSatisfeitos(List<Disciplina> preRequisitos) {
 		boolean result = false;
-		for(Periodo periodo : periodos) {
-			for(Disciplina disciplina : preRequisitos) {
-				if(periodo.disciplinasAlocadas().contains(disciplina))
-					result = true;
+		if (!preRequisitos.isEmpty()) {
+			for(Periodo periodo : periodos) {
+				for(Disciplina disciplina : preRequisitos) {
+					if(periodo.disciplinasAlocadas().contains(disciplina)) {
+						result = true;
+					}
+				}
 			}
+		} else {
+			result = true;
 		}
 		return result;
 	}
