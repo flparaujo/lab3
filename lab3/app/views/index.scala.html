@@ -102,9 +102,26 @@
 	<br>
 	
 	<div id="addperiodos">
-	@form(routes.Application.novoPeriodo()) {
-       <input type="submit" value="Adicionar periodo">
+	@if(sistema.getPeriodos.size() > 1) {
+	<script language="JavaScript">
+		<!--
+		function Exibe() {
+			if (@sistema.numeroDeCreditosDoPeriodo(sistema.getPeriodos().size() -1) < 14) {
+				formulario.addPeriodo.disabled = true;
+			} else {
+				formulario.addPeriodo.disabled = false;
+			}
+		}
+		// -->
+	</script>
+	}
+	<body onload="Exibe()">
+	<form name="formulario" 
+		@form(routes.Application.novoPeriodo()) {
+       <input type="submit" name="addPeriodo" value="Adicionar periodo" onload="Exibe()">
     }
+    </form>
+    </body>
     </div>
 
 	<br>
