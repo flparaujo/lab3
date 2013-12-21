@@ -85,6 +85,27 @@ public class SistemaDePlanejamentoDeCursoTest {
 		}
 	}
 	
+	@Test
+	public void deveRemoverDisciplina() throws Exception {
+		sistema.adicionaPeriodo();
+		sistema.adicionaPeriodo();
+		sistema.adicionaPeriodo();
+		sistema.adicionaDisciplinaAoPeriodo(1, "Matematica Discreta", 4);
+		sistema.adicionaDisciplinaAoPeriodo(1, "Teoria dos Grafos", 2);
+		sistema.adicionaDisciplinaAoPeriodo(2, "Teoria da Computacao", 4);
+		sistema.adicionaDisciplinaAoPeriodo(3, "Logica Matematica", 4);
+		sistema.devolveDisciplinaParaGrade("Teoria dos Grafos");
+		sistema.removeDisciplinasDesalocadas();
+		assertEquals(null, sistema.getPeriodo(1).getDisciplina("Teoria dos Grafos"));
+		assertEquals(null, sistema.getPeriodo(2).getDisciplina("Teoria da Computacao"));
+		assertEquals(null, sistema.getPeriodo(3).getDisciplina("Logica Matematica"));
+		assertEquals(new Disciplina("Teoria dos Grafos", 2), 
+				sistema.getDisciplinaDaGrade("Teoria dos Grafos"));
+		assertEquals(new Disciplina("Teoria da Computacao", 4), 
+				sistema.getDisciplinaDaGrade("Teoria da Computacao"));
+		assertEquals(new Disciplina("Logica Matematica", 4), 
+				sistema.getDisciplinaDaGrade("Logica Matematica"));
+	}
 	
 	@Test
 	public void deveMostrarCreditosDeDisciplinaDeQualquerPeriodo() {

@@ -43,5 +43,12 @@ public class Application extends Controller {
     	}
     	return redirect(routes.Application.planejamentoDeCurso());
     }
+    
+    public static Result desalocarDisciplinaDePeriodo() {
+    	Form<FormHandler> form = formHandler.bindFromRequest();
+    	sistema.devolveDisciplinaParaGrade(form.get().getInputNameDisciplina());
+    	sistema.removeDisciplinasDesalocadas();
+    	return redirect(routes.Application.planejamentoDeCurso());
+    }
 
 }

@@ -72,6 +72,8 @@ public class Periodo {
 		}
 		return false;
 	}
+	
+	//public Disciplina removeDisciplina()
 
 	/**
 	 * Obtem o numero de creditos do periodo.
@@ -85,7 +87,37 @@ public class Periodo {
 		return total;
 	}
 
+	/**
+	 * Metodo que verifica se o periodo tem menos creditos do que o limite minimo.
+	 * @return true se esta abaixo do limite minimo de creditos, false caso contrario.
+	 */
 	public boolean abaixoDoLimiteMinimoDeCreditos() {
 		return getNumeroDeCreditos() < Periodo.MINIMO_DE_CREDITOS;
+	}
+
+	/**
+	 * Remove uma disciplina deste periodo, retornando-a.
+	 * @param nomeDaDisciplina O nome da disciplina a ser removida.
+	 * @return a disciplina removida.
+	 */
+	public Disciplina removeDisciplina(String nomeDaDisciplina) {
+		for(Disciplina disciplina : disciplinas) {
+			if(disciplina.getNome().equals(nomeDaDisciplina))
+				return disciplinas.remove(disciplinas.indexOf(disciplina));
+		}
+		return null;
+	}
+
+	/**
+	 * Obtem uma disciplina deste periodo, sem remove-la.
+	 * @param nomeDaDisciplina O nome da disciplina que se quer obter.
+	 * @return a disciplina, se ela estiver no periodo, null caso contrario.
+	 */
+	public Disciplina getDisciplina(String nomeDaDisciplina) {
+		for(Disciplina disciplina : disciplinas) {
+			if(disciplina.getNome().equals(nomeDaDisciplina))
+				return disciplinas.get(disciplinas.indexOf(disciplina));
+		}
+		return null;
 	}
 }

@@ -67,7 +67,6 @@ public class LeitorDeDisciplinas {
 	 */
 	public String[] getInformacoesDasDisciplinas() {
 		String[] informacoes = mapa.keySet().toArray(new String[mapa.keySet().size()]);
-		Arrays.sort(informacoes);
 		return informacoes;
 	}
 	

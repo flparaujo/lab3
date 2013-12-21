@@ -9,7 +9,7 @@ import java.util.List;
  * @author Felipe Araujo de Andrade, Franklin Wesley Bastos.
  * @version 1.0
  */
-public class Disciplina {
+public class Disciplina implements Comparable<Disciplina> {
 	
 	private String nome;
 	private int numeroDeCreditos;
@@ -83,6 +83,15 @@ public class Disciplina {
 	@Override
 	public String toString() {
 		return this.getNome();
+	}
+    
+	/**
+	 * Compara esta disciplina com outra pelo nome.
+	 * @param outraDisciplina A disciplina a ser comparada com esta.
+	 */
+	@Override
+	public int compareTo(Disciplina outraDisciplina) {
+		return this.getNome().compareTo(outraDisciplina.getNome());
 	}
 
 }

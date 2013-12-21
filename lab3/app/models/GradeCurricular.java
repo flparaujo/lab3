@@ -27,6 +27,7 @@ public class GradeCurricular {
 	 * @return uma lista com as disciplinas da grade.
 	 */
 	public List<Disciplina> getDisciplinas() {
+		Collections.sort(disciplinas);
 		return disciplinas;
 	}
 	
@@ -48,7 +49,7 @@ public class GradeCurricular {
 	 * @param nome O nome da disciplina.
 	 * @return a disciplina.
 	 */
-	public Disciplina pegaDisciplina(String nome) {
+	public Disciplina retiraDisciplina(String nome) {
 		for(Disciplina disciplina : disciplinas) {
 			if(disciplina.getNome().equals(nome)) {
 				return disciplinas.remove(disciplinas.indexOf(disciplina));
@@ -57,19 +58,26 @@ public class GradeCurricular {
 		return null;
 	}
 	
+	public void adicionaDisciplina(String nome) {
+		List<Disciplina> preRequisitos = new ArrayList<Disciplina>();
+		int numeroDeCreditos = leitorDeDisciplinas.getNumeroDeCreditosDeDisciplina(nome);
+		geraPreRequisitosDeDisciplina(nome, preRequisitos);
+		disciplinas.add(new Disciplina(nome, numeroDeCreditos, preRequisitos));
+	}
+	
 	private void geraDisciplinas() {
-		List<Disciplina> preRequisitos;
 		for(String info : leitorDeDisciplinas.getInformacoesDasDisciplinas()) {
-			preRequisitos = new ArrayList<Disciplina>();
 			String nome = info.split("-")[0];
-			int numeroDeCreditos = leitorDeDisciplinas.getNumeroDeCreditosDeDisciplina(nome);
-			for(String nomeDePreRequisto : leitorDeDisciplinas.getNomesDosPreRequisitosDeDisciplina(nome)) {
-				//CREATOR: grade curricular é feita de disciplinas
-				preRequisitos.add(new Disciplina(nomeDePreRequisto, leitorDeDisciplinas.
-						getNumeroDeCreditosDeDisciplina(nomeDePreRequisto)));
-			}
-			Disciplina disciplina = new Disciplina(nome, numeroDeCreditos, preRequisitos);
-			disciplinas.add(disciplina);
+			adicionaDisciplina(nome);
+		}
+	}
+	
+	private void geraPreRequisitosDeDisciplina(String nome,
+			List<Disciplina> preRequisitos) {
+		for(String nomeDePreRequisto : leitorDeDisciplinas.getNomesDosPreRequisitosDeDisciplina(nome)) {
+			//CREATOR: grade curricular é feita de disciplinas
+			preRequisitos.add(new Disciplina(nomeDePreRequisto, leitorDeDisciplinas.
+					getNumeroDeCreditosDeDisciplina(nomeDePreRequisto)));
 		}
 	}
 }

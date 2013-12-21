@@ -16,14 +16,15 @@ public class SistemaDePlanejamentoDeCurso {
 	
 	private List<Periodo> periodos;
 	private GradeCurricular grade;
+	private List<Disciplina> handlerDisciplinas;
 	
 	public SistemaDePlanejamentoDeCurso() {
 		this.periodos = new ArrayList <Periodo>();
 		this.grade = new GradeCurricular();
 		primeiroPeriodo(); //Obs.: So chame apos criar a grade e antes de criar outro periodo!!
+		handlerDisciplinas = new ArrayList<Disciplina>();
 	}
 	
-	// Grande Curricular
 	public List<Disciplina> listaDisciplinasDoCurso() {
 		return grade.getDisciplinas();
 	}
@@ -49,7 +50,6 @@ public class SistemaDePlanejamentoDeCurso {
 		return periodos.get(indicePeriodo).getNumeroDeCreditos(); 
 	}
 	
-	// 1º Periodo
 	private void primeiroPeriodo() {
 		getPeriodos().add(new Periodo());
 		alocaDisciplinasDoPrimeiroPeriodo();
@@ -67,11 +67,10 @@ public class SistemaDePlanejamentoDeCurso {
 			} catch (LimitExceededException e) {
 				e.printStackTrace();
 			}
-			grade.pegaDisciplina(nome);
+			grade.retiraDisciplina(nome);
 		}	
 	}
 	
-	// Todos os periodos
 	public List<Periodo> getPeriodos() {
 		return this.periodos;
 	}
@@ -102,7 +101,7 @@ public class SistemaDePlanejamentoDeCurso {
 		if(grade.getDisciplina(nome) != null) {
 			adicionarDisciplinaSePreRequisitosSatisfeitos(indicePeriodo, nome, numeroDeCreditos, 
 					grade.getDisciplina(nome).getPreRequisitos());
-				grade.pegaDisciplina(nome);
+				grade.retiraDisciplina(nome);
 		}
 	}
 
@@ -113,5 +112,57 @@ public class SistemaDePlanejamentoDeCurso {
 	public boolean periodoComCreditosAbaixoDoLimiteMinimo(int idPeriodo) {
 		return getPeriodo(idPeriodo).abaixoDoLimiteMinimoDeCreditos();
 	}
+
+	public void devolveDisciplinaParaGrade(String nomeDaDisciplina) {
+		int indicePeriodo = indicePeriodoDeDisciplina(nomeDaDisciplina);
+		Disciplina aRemover = getPeriodo(indicePeriodo).getDisciplina(nomeDaDisciplina);
+		grade.adicionaDisciplina(nomeDaDisciplina);
+		handlerDisciplinas.add(aRemover);
+		for(int i = indicePeriodo+1; i < periodos.size(); i++) {
+			for(Disciplina disciplina : periodos.get(i).disciplinasAlocadas()) {
+				if(disciplina.getPreRequisitos().contains(aRemover))
+					devolveDisciplinaParaGrade(disciplina.getNome());
+			}
+		}
+	}
+	
+	public int indicePeriodoDeDisciplina(String nome) {
+		for(int i = 0; i < periodos.size(); i++)
+			if(periodos.get(i).getDisciplina(nome) != null)
+				return i;
+		return -1;
+	}
+	
+	private void removeDisciplina(String nomeDaDisciplina) {
+		for(int i = 0; i < periodos.size(); i++)
+			for(Disciplina disciplina : periodos.get(i).disciplinasAlocadas())
+				if(disciplina.getNome().equals(nomeDaDisciplina)) {
+					periodos.get(i).removeDisciplina(nomeDaDisciplina);
+					return;
+				}
+		
+	}
+	
+	public void removeDisciplinasDesalocadas() {
+		for(Disciplina disciplina : handlerDisciplinas) {
+			removeDisciplina(disciplina.getNome());
+		}
+	}
+	
+	/**
+	 * Obtem as disciplinas alocadas a partir do segundo periodo.
+	 * @return as disciplinas alocadas.
+	 */
+	public List<Disciplina> getDisciplinasAlocadas() {
+		List<Disciplina> alocadas = new ArrayList<Disciplina>();
+		for(int i = 1; i < periodos.size(); i++) {
+			if(! periodos.get(i).disciplinasAlocadas().isEmpty()) {
+				alocadas.addAll(periodos.get(i).disciplinasAlocadas());
+			}
+		}
+		return alocadas;
+	}
+	
+	
 	
 }
