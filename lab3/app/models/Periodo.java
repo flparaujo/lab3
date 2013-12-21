@@ -3,6 +3,8 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.LimitExceededException;
+
 /**
  * Classe que representa um periodo de curso.
  * 
@@ -10,10 +12,8 @@ import java.util.List;
  * @version 1.1
  */
 public class Periodo {
-	
-	//CREATOR: classe Periodo registra objetos do tipo Disciplina
+
 	private List<Disciplina> disciplinas;
-	private boolean ultrapassaLimiteMaximo;
 	
 	/**
 	 * Constante que representa o numero minimo de creditos que um periodo deve conter.
@@ -44,8 +44,10 @@ public class Periodo {
 	 * Adiciona uma disciplina a este periodo.
 	 * @param nome O nome da disciplina a ser adicionada.
 	 * @param numeroDeCreditos O numero de creditos da disciplina a ser adicionada.
+	 * @throws LimitExceededException quando a tentativa de adicionar a disciplina ultrapassa o limite maximo de creditos.
 	 */
-	public void adicionaDisciplina(String nome, int numeroDeCreditos) {
+	public void adicionaDisciplina(String nome, int numeroDeCreditos) throws LimitExceededException {
+		//CREATOR: classe Periodo registra objetos do tipo Disciplina
 		adicionaDisciplina(nome, numeroDeCreditos, new ArrayList<Disciplina>());
 	}
 	
@@ -55,16 +57,18 @@ public class Periodo {
 	 * @param numeroDeCreditos O numero de creditos da disciplina.
 	 * @param preRequisitos A lista contendo as disciplinas pre-requisito da disciplina a ser adicionada.
 	 * @return true se a disciplina foi adicionada, false caso contrario.
+	 * @throws LimitExceededException quando a tentativa de adicionar a disciplina ultrapassa o limite maximo de creditos.
 	 */
-	public boolean adicionaDisciplina(String nome, int numeroDeCreditos, List<Disciplina> preRequisitos) {
+	public boolean adicionaDisciplina(String nome, int numeroDeCreditos, List<Disciplina> preRequisitos) 
+			throws LimitExceededException {
+		//CREATOR: classe Periodo registra objetos do tipo Disciplina
 		Disciplina disciplina = new Disciplina(nome, numeroDeCreditos, preRequisitos);
 		if (!disciplinas.contains(disciplina)) {
-			if ((getNumeroDeCreditos() + numeroDeCreditos) <= Periodo.MAXIMO_DE_CREDITOS) {
-				ultrapassaLimiteMaximo = false;
-				return disciplinas.add(disciplina);
-			} else {
-				ultrapassaLimiteMaximo = true;
+			if ((getNumeroDeCreditos() + numeroDeCreditos) > MAXIMO_DE_CREDITOS) {
+				throw new LimitExceededException("Nao foi possivel alocar " + nome + ". Limite maximo eh " +
+						"de "+MAXIMO_DE_CREDITOS+" creditos!");
 			}
+			return disciplinas.add(disciplina);
 		}
 		return false;
 	}
@@ -74,17 +78,11 @@ public class Periodo {
 	 * @return o numero de creditos do periodo.
 	 */
 	public int getNumeroDeCreditos() {
+	    //INFORMATION EXPERT: Casse Periodo contem disciplinas, que sao o atributo necessario para o calculo do total de creditos
 		int total = 0;
 		for(Disciplina disciplina : disciplinas)
 			total += disciplina.getNumeroDeCreditos();
 		return total;
-	}
-
-	/**
-	 * @return
-	 */
-	public boolean acimaDoLimiteMaximoDeCreditos() {
-		return this.ultrapassaLimiteMaximo;
 	}
 
 	public boolean abaixoDoLimiteMinimoDeCreditos() {

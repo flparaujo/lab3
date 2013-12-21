@@ -1,4 +1,4 @@
-@(sistema: SistemaDePlanejamentoDeCurso, formHandler: Form[form.FormHandler])
+@(sistema: SistemaDePlanejamentoDeCurso, formHandler: Form[form.FormHandler], message: String)
 
 @import helper._
 
@@ -9,23 +9,34 @@
 	<div class="titulo">
 		<nome-principal>Meu Curso</nome-principal>
 		<br>
-		<br>
-		<nome> Periodo Atual</nome>
-		<br>
 	</div>
 	<br/>
 		
 	<div id="colunas">
-		@for(disciplina <- sistema.getDisciplinasDoPeriodoAtual()){
-			<div id="c1" class="coluna">
-			<div class="disciplina">
+	 	@for(periodo <- sistema.getPeriodos()) {
+	 	  <br>
+	 	  <nome> ------------------------------------------------------- </nome>
+	 	  <br>
+	 	  <nome> @(sistema.getPeriodos.indexOf(periodo)+1)º periodo </nome>
+	 	  <br>
+	 	  <br>
+		  @for(disciplina <- sistema.getDisciplinasDoPeriodo(sistema.getPeriodos.indexOf(periodo))){
+			 <div id="c1" class="coluna">
+			 <div class="disciplina">
 					<nome>@disciplina.getNome() </nome>
 					<descricao> ---- @disciplina.getNumeroDeCreditos() creditos</descricao>
-			</div>
-			</div>
+			 </div>
+			 </div>
+		  }
+		  <nome> Total de créditos: @sistema.numeroDeCreditosDoPeriodo(sistema.getPeriodos.indexOf(periodo))</nome>
+		   @if(sistema.periodoComCreditosAbaixoDoLimiteMinimo(sistema.getPeriodos().indexOf(periodo))) {
+				<br>
+				<nome>Aviso: Mínimo de creditos não atingido</nome>
+				<br>
+	  		 }
+	  	   <br>
 		}
 		<br>
-		<nome> Total de créditos: @sistema.numeroDeCreditosDoPeriodoAtual()</nome>
 	
 		<div id="c2" class="coluna"></div>
 		<div id="c3" class="coluna"></div>
@@ -36,31 +47,34 @@
 		<div id="c8" class="coluna"></div>
 	</div>
 	
+	@if(message != "") {
+		 <SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">alert ("@message.toString()")</SCRIPT>
+	}
+	
 	<br>
 	<div id="alocarDisciplina">
-	@if(sistema.getPeriodos().indexOf(sistema.getPeriodoAtual()) != 0) {
-		@form(routes.Application.adicionaDisciplinaNoPeriodoAtual()){
-			<nome> Alocar Disciplina ao período atual</nome>
+	@form(routes.Application.adicionaDisciplinaEmPeriodo()){
+		@if(sistema.getPeriodos.size() > 1) {
+		    <nome> --------------------------- </nome>
+		    <br>
+		    <nome> Alocar Disciplina a Periodo</nome>
 			<br>
 			<select class="span1" name="inputNameDisciplina" >
         		@for(disciplina <- sistema.listaDisciplinasDoCurso()) { 
 					<option value="@disciplina.getNome()" name="inputNameDisciplina" >@disciplina.getNome()</option> 
 				}
-				<input type="submit" value="alocar disciplina">
-            </select>  
-		}
-		@if(sistema.getMinimoCreditosDoPeriodoAtual()) {
-		<br>
-		<nome> Mínimo de creditos não atingido</nome>
-		<br>
-		}
-	
-		@if(sistema.getMaximoCreditosDoPeriodoAtual()) {
-			<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">alert ("Máximo de Creditos atingido")</SCRIPT>
-		}
+        	</select> 
+        	<select class="span1" name="idPeriodo" >
+        		@for(periodo <- sistema.getPeriodos()) {
+        	   		@if(sistema.getPeriodos().indexOf(periodo) != 0) {
+				 		<option value=@(sistema.getPeriodos().indexOf(periodo)+1) name="idPeriodo" >@(sistema.getPeriodos().indexOf(periodo)+1)</option> 
+			   		}
+				}
+        	</select> 
+        	<input type="submit" value="alocar disciplina"> 
+        }
 	}
 	</div>
-	<br>
 	<br>
 	
 	<div id="addperiodos">
@@ -95,24 +109,5 @@
 	</div>
 	</right>
 	
-	<div id="periodosAnteriores">
-	@if(sistema.getPeriodosAnteriores().size() != 0) {
-		<br>
-			<nome> Periodos Anteriores</nome>
-		<br>
-			@for(periodo <- sistema.getPeriodosAnteriores()){	
-				@for(disciplina <- periodo.disciplinasAlocadas()){
-					<div id="c1" class="coluna">
-					<div class="disciplina">
-						<nome>@disciplina.getNome() </nome>
-						<descricao> ---- @disciplina.getNumeroDeCreditos() creditos</descricao>
-					</div>
-					</div>
-				}
-			    <nome> Total de créditos: @sistema.numeroDeCreditosDoPeriodo(sistema.getPeriodosAnteriores().indexOf(periodo)+1)</nome>
-			}
-		<br>
-	}
-	</div>
 </div>
 }

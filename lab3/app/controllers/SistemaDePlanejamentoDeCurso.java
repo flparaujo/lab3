@@ -3,6 +3,11 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.LimitExceededException;
+
+import exceptios.AlocacaoInvalidaException;
+
+
 import models.Disciplina;
 import models.GradeCurricular;
 import models.Periodo;
@@ -10,14 +15,12 @@ import models.Periodo;
 public class SistemaDePlanejamentoDeCurso {
 	
 	private List<Periodo> periodos;
-	private Periodo periodoAtual;
 	private GradeCurricular grade;
 	
 	public SistemaDePlanejamentoDeCurso() {
 		this.periodos = new ArrayList <Periodo>();
 		this.grade = new GradeCurricular();
 		primeiroPeriodo(); //Obs.: So chame apos criar a grade e antes de criar outro periodo!!
-		this.periodoAtual = periodos.get(periodos.size() - 1);
 	}
 	
 	// Grande Curricular
@@ -25,43 +28,25 @@ public class SistemaDePlanejamentoDeCurso {
 		return grade.getDisciplinas();
 	}
 	
-	// Periodo atual
-	public Periodo getPeriodoAtual() {
-		return this.periodoAtual;
+	public Periodo getPeriodo(int i) {
+		return periodos.get(i);
 	}
 	
-	public List<Disciplina> getDisciplinasDoPeriodoAtual() {
-		return getPeriodoAtual().disciplinasAlocadas();
+	public List<Disciplina> getDisciplinasDoPeriodo(int indicePeriodo) {
+		return getPeriodo(indicePeriodo).disciplinasAlocadas();
 	}
 	
-	public boolean getMinimoCreditosDoPeriodoAtual() {
-		return periodoAtual.abaixoDoLimiteMinimoDeCreditos();
-	}
-	
-	public boolean getMaximoCreditosDoPeriodoAtual() {
-		return periodoAtual.acimaDoLimiteMaximoDeCreditos();
-	}
-	
-	private boolean adicionarDisciplinaSePreRequisitosSatisfefitos(String nome, int numeroDeCreditos, List<Disciplina> preRequisitos) {
-		if (preRequisitosSatisfeitos(preRequisitos)) {	
-			return getPeriodoAtual().adicionaDisciplina(nome, numeroDeCreditos, preRequisitos);
-		} else {
-			// mostrar q prerequisitos naum foram satisfeitos
+	private void adicionarDisciplinaSePreRequisitosSatisfeitos(int indicePeriodo, String nome, int numeroDeCreditos, 
+			List<Disciplina> preRequisitos) throws AlocacaoInvalidaException, LimitExceededException {
+		if (! preRequisitosSatisfeitos(indicePeriodo, preRequisitos)) {	
+			throw new AlocacaoInvalidaException("Nao pode alocar " + nome + " ao "+ (indicePeriodo+1) 
+					+ "º periodo. " + "Ha pre-requisito(s) nao satisfeito(s).");
 		}
-		return false;
+		getPeriodo(indicePeriodo).adicionaDisciplina(nome, numeroDeCreditos, preRequisitos);
 	}
 	
-	public int numeroDeCreditosDoPeriodoAtual() {
-		return getPeriodoAtual().getNumeroDeCreditos(); 
-	}
-	
-	// Periodos anteriores
-	public List<Periodo> getPeriodosAnteriores () {
-		List<Periodo> result = new ArrayList<Periodo>();
-		for (int i = 0; i < getPeriodos().size()-1; i++) {
-			result.add(periodos.get(i));
-		}
-		return result;
+	public int numeroDeCreditosDoPeriodo(int indicePeriodo) {
+		return periodos.get(indicePeriodo).getNumeroDeCreditos(); 
 	}
 	
 	// 1º Periodo
@@ -77,8 +62,12 @@ public class SistemaDePlanejamentoDeCurso {
 		
 		for(String nome : nomesDasDisciplinas) {
 			int numeroDeCreditos = grade.getDisciplina(nome).getNumeroDeCreditos();
-			getPeriodos().get(0).adicionaDisciplina(nome, numeroDeCreditos);
-			grade.removeDisciplina(nome);
+			try {
+				getPeriodos().get(0).adicionaDisciplina(nome, numeroDeCreditos);
+			} catch (LimitExceededException e) {
+				e.printStackTrace();
+			}
+			grade.pegaDisciplina(nome);
 		}	
 	}
 	
@@ -89,43 +78,40 @@ public class SistemaDePlanejamentoDeCurso {
 	
 	//CREATOR: classe SistemaDePlanejamentoDeCurso registra objetos do tipo Periodo
 	public void adicionaPeriodo() {
-		Periodo novoPeriodo = new Periodo();
-		if(!getPeriodoAtual().abaixoDoLimiteMinimoDeCreditos()) {
-			getPeriodos().add(novoPeriodo);
-			periodoAtual = novoPeriodo;
-		}
-	}
-
-	public int numeroDeCreditosDoPeriodo(int i) {
-		return getPeriodos().get(i-1).getNumeroDeCreditos();
+		periodos.add(new Periodo());
 	}
 	
-	private boolean preRequisitosSatisfeitos(List<Disciplina> preRequisitos) {
-		boolean result = false;
+	private boolean preRequisitosSatisfeitos(int indicePeriodo, List<Disciplina> preRequisitos) {
+		int contPreRequisitos = 0;
 		if (!preRequisitos.isEmpty()) {
-			for(Periodo periodo : periodos) {
-				for(Disciplina disciplina : preRequisitos) {
-					if(periodo.disciplinasAlocadas().contains(disciplina)) {
-						result = true;
+			for(int i = 0; i < indicePeriodo; i++) {
+				for(Disciplina disciplinaPreRequisito : preRequisitos) {
+					if(periodos.get(i).disciplinasAlocadas().contains(disciplinaPreRequisito)) {
+						contPreRequisitos ++;
 					}
 				}
 			}
 		} else {
-			result = true;
+			return true;
 		}
-		return result;
+		return contPreRequisitos == preRequisitos.size();
 	}
 
-	public void adicionaDisciplinaAoPeriodoAtual(String nome, int numeroDeCreditos) {
+	public void adicionaDisciplinaAoPeriodo(int indicePeriodo, String nome, int numeroDeCreditos) 
+			throws AlocacaoInvalidaException, LimitExceededException {
 		if(grade.getDisciplina(nome) != null) {
-			if(adicionarDisciplinaSePreRequisitosSatisfefitos(nome, numeroDeCreditos, 
-					grade.getDisciplina(nome).getPreRequisitos())) {
-				grade.removeDisciplina(nome);
-			}
+			adicionarDisciplinaSePreRequisitosSatisfeitos(indicePeriodo, nome, numeroDeCreditos, 
+					grade.getDisciplina(nome).getPreRequisitos());
+				grade.pegaDisciplina(nome);
 		}
 	}
 
 	public Disciplina getDisciplinaDaGrade(String nome) {
 		return grade.getDisciplina(nome);
 	}
+	
+	public boolean periodoComCreditosAbaixoDoLimiteMinimo(int idPeriodo) {
+		return getPeriodo(idPeriodo).abaixoDoLimiteMinimoDeCreditos();
+	}
+	
 }

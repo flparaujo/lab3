@@ -1,5 +1,9 @@
 package controllers;
 
+import javax.naming.LimitExceededException;
+
+
+import exceptios.AlocacaoInvalidaException;
 import form.FormHandler;
 import play.data.Form;
 import play.mvc.*;
@@ -8,13 +12,16 @@ public class Application extends Controller {
 	
 	static SistemaDePlanejamentoDeCurso sistema = new SistemaDePlanejamentoDeCurso();
 	static Form<FormHandler> formHandler = Form.form(FormHandler.class);
+	static String message = "";
 
     public static Result index() {
     	return redirect(routes.Application.planejamentoDeCurso());
     }
     
     public static Result planejamentoDeCurso() {
-    	return ok(views.html.index.render(sistema, formHandler));
+    	String tempMsg = message; //pega a mensagem vinda do redirect anterior
+    	message = ""; //'reseta' a mensagem de erro. Pra nao ficar dando erro direto.
+    	return ok(views.html.index.render(sistema, formHandler, tempMsg));
     }
     
     public static Result novoPeriodo() {
@@ -22,10 +29,18 @@ public class Application extends Controller {
     	return redirect(routes.Application.planejamentoDeCurso());
     }
     
-    public static Result adicionaDisciplinaNoPeriodoAtual() {
+    public static Result adicionaDisciplinaEmPeriodo() {
     	Form<FormHandler> form = formHandler.bindFromRequest();
-    	int numeroDeCreditos = sistema.getDisciplinaDaGrade(form.get().getInputNameDisciplina()).getNumeroDeCreditos();
-    	sistema.adicionaDisciplinaAoPeriodoAtual(form.get().getInputNameDisciplina(), numeroDeCreditos);
+    	int numeroDeCreditos = sistema.getDisciplinaDaGrade(form.get().getInputNameDisciplina()).
+    			getNumeroDeCreditos();
+    	int idPeriodo = form.get().getIdPeriodo()-1;
+    	try {
+    		sistema.adicionaDisciplinaAoPeriodo(idPeriodo, form.get().getInputNameDisciplina(), 
+    				numeroDeCreditos);
+    	}
+    	catch(AlocacaoInvalidaException | LimitExceededException e) {
+    		 message = e.getMessage();
+    	}
     	return redirect(routes.Application.planejamentoDeCurso());
     }
 

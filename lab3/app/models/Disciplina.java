@@ -11,9 +11,9 @@ import java.util.List;
  */
 public class Disciplina {
 	
-	// INFORMATION EXPERT: Disciplinas tem a responsabilidade de saber seus pre-requisitos.	
 	private String nome;
 	private int numeroDeCreditos;
+	// INFORMATION EXPERT: Disciplinas tem a responsabilidade de saber seus pre-requisitos.	
 	private List<Disciplina> preRequisitos;
 
 	/**
@@ -75,9 +75,14 @@ public class Disciplina {
 		return ((Disciplina) obj).getNome().equals(nome) 
 				&& ((Disciplina) obj).getNumeroDeCreditos() == numeroDeCreditos;
 	}
-
+	
+	/**
+	 * Formata a disciplina como string.
+	 * @return a representacao da disciplina como string.
+	 */
 	@Override
 	public String toString() {
-		return getNome();
+		return this.getNome();
 	}
+
 }

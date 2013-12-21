@@ -22,7 +22,4 @@ public class DisciplinaTest {
 		
 	}
 	
-	//@Test
-	//public void 
-
 }

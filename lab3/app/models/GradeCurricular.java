@@ -6,14 +6,13 @@ import java.util.*;
  * Classe que representa a grade curricular do curso.
  * 
  * @author Felipe Araujo de Andrade
- * @version 1.1
+ * @version 1.2
  */
 public class GradeCurricular {
 	
 	private LeitorDeDisciplinas leitorDeDisciplinas;
 	private List<Disciplina> disciplinas;
 	
-	//CREATOR: grade curricular é feita de disciplinas
 	/**
 	 * Construtor da grade curricular.
 	 */
@@ -44,7 +43,12 @@ public class GradeCurricular {
 		return null;
 	}
 	
-	public Disciplina removeDisciplina(String nome) {
+	/**
+	 * Obtém uma disciplina removendo-a da grade curricular.
+	 * @param nome O nome da disciplina.
+	 * @return a disciplina.
+	 */
+	public Disciplina pegaDisciplina(String nome) {
 		for(Disciplina disciplina : disciplinas) {
 			if(disciplina.getNome().equals(nome)) {
 				return disciplinas.remove(disciplinas.indexOf(disciplina));
@@ -52,7 +56,7 @@ public class GradeCurricular {
 		}
 		return null;
 	}
-
+	
 	private void geraDisciplinas() {
 		List<Disciplina> preRequisitos;
 		for(String info : leitorDeDisciplinas.getInformacoesDasDisciplinas()) {
@@ -60,6 +64,7 @@ public class GradeCurricular {
 			String nome = info.split("-")[0];
 			int numeroDeCreditos = leitorDeDisciplinas.getNumeroDeCreditosDeDisciplina(nome);
 			for(String nomeDePreRequisto : leitorDeDisciplinas.getNomesDosPreRequisitosDeDisciplina(nome)) {
+				//CREATOR: grade curricular é feita de disciplinas
 				preRequisitos.add(new Disciplina(nomeDePreRequisto, leitorDeDisciplinas.
 						getNumeroDeCreditosDeDisciplina(nomeDePreRequisto)));
 			}

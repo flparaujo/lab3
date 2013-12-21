@@ -2,12 +2,15 @@ package tdd;
 
 import static org.junit.Assert.*;
 
+import javax.naming.LimitExceededException;
+
 import models.Disciplina;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import controllers.SistemaDePlanejamentoDeCurso;
+import exceptios.AlocacaoInvalidaException;
 
 public class SistemaDePlanejamentoDeCursoTest {
 
@@ -20,34 +23,68 @@ public class SistemaDePlanejamentoDeCursoTest {
 
 	@Test
 	public void deveMostrarDisciplinasDoPrimeiroPeriodo() {
-		assertEquals(20, sistema.numeroDeCreditosDoPeriodo(1));
+		assertEquals(20, sistema.numeroDeCreditosDoPeriodo(0));
 		assertEquals(new Disciplina("Calculo Dif. e Int. 1", 4), 
-				sistema.getDisciplinasDoPeriodoAtual().get(0));
+				sistema.getDisciplinasDoPeriodo(0).get(0));
 		assertEquals(new Disciplina("Algebra Vet. e Geom. Analitica", 4), 
-				sistema.getDisciplinasDoPeriodoAtual().get(1));
+				sistema.getDisciplinasDoPeriodo(0).get(1));
 		assertEquals(new Disciplina("Lab. de Programacao 1", 4), 
-				sistema.getDisciplinasDoPeriodoAtual().get(2));
-		assertEquals(new Disciplina("Programacao 1", 4), sistema.getDisciplinasDoPeriodoAtual().get(3));
+				sistema.getDisciplinasDoPeriodo(0).get(2));
+		assertEquals(new Disciplina("Programacao 1", 4), sistema.getDisciplinasDoPeriodo(0).get(3));
 		assertEquals(new Disciplina("Introducao a Computacao", 4), 
-				sistema.getDisciplinasDoPeriodoAtual().get(4));
+				sistema.getDisciplinasDoPeriodo(0).get(4));
 	}
 	
 	@Test
-	public void deveAdicionarDisciplinaNoPeriodoAtual() {
+	public void deveAdicionarDisciplinaEmPeriodo() throws Exception {
 		sistema.adicionaPeriodo();
-		sistema.adicionaDisciplinaAoPeriodoAtual("Calculo Dif. e Int. 2", 4);
-		
-		assertTrue(sistema.getDisciplinasDoPeriodoAtual().contains(new Disciplina("Calculo " +
-				"Dif. e Int. 2", 4)));
+		sistema.adicionaDisciplinaAoPeriodo(1, "Calculo Dif. e Int. 2", 4);
 	}
 
 	@Test
-	public void naoDeveAlocarDisciplinaAoPeriodoAtual() {
+	public void naoDeveAlocarDisciplinaAoPeriodo() throws Exception {
 		sistema.adicionaPeriodo();
-		sistema.adicionaDisciplinaAoPeriodoAtual("Banco de Dados 1", 4);
-		assertFalse(sistema.getDisciplinasDoPeriodoAtual().contains(new 
-				Disciplina("Banco de Dados 1", 4)));
+		try {
+			sistema.adicionaDisciplinaAoPeriodo(1, "Banco de Dados 1", 4);
+		} catch (AlocacaoInvalidaException e) {
+			assertEquals("Nao pode alocar Banco de Dados 1 ao 2º periodo. Ha " +
+					"pre-requisito(s) nao satisfeito(s).", e.getMessage());
+		}
 	}
+	
+	@Test
+	public void naoPodeAlocarDisciplinaEmPeriodoAnteriorAoDoPreRequisito() throws Exception {
+		sistema.adicionaPeriodo();
+		sistema.adicionaPeriodo();
+		sistema.adicionaDisciplinaAoPeriodo(2, "Gerencia da Informacao", 4);
+	    try {
+			sistema.adicionaDisciplinaAoPeriodo(1, "Sistemas de Informacao 1", 4);
+		} catch (AlocacaoInvalidaException e) {
+			assertEquals("Nao pode alocar Sistemas de Informacao 1 ao 2º periodo. Ha " +
+					"pre-requisito(s) nao satisfeito(s).", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void naoPodeAdicionarDisciplinaAcimaDoLimiteMaximoDeCreditos() throws Exception {
+		sistema.adicionaPeriodo();
+		sistema.adicionaDisciplinaAoPeriodo(1, "Algebra Linear", 4);
+		sistema.adicionaDisciplinaAoPeriodo(1, "Administracao", 4);
+		sistema.adicionaDisciplinaAoPeriodo(1, "Gerencia da Informacao", 4);
+		sistema.adicionaDisciplinaAoPeriodo(1, "Futsal", 2);
+		sistema.adicionaDisciplinaAoPeriodo(1, "Ingles", 4);
+		sistema.adicionaDisciplinaAoPeriodo(1, "Fundamentos de Fisica Classica", 4);
+		sistema.adicionaDisciplinaAoPeriodo(1, "Informatica e Sociedade", 2);
+		sistema.adicionaDisciplinaAoPeriodo(1, "Empreendedorismo 1", 4);
+		try {
+			sistema.adicionaDisciplinaAoPeriodo(1, "Expressao Grafica", 4);
+		}
+		catch(LimitExceededException e) {
+			assertEquals("Nao foi possivel alocar Expressao Grafica. Limite maximo eh " +
+					"de 28 creditos!", e.getMessage());
+		}
+	}
+	
 	
 	@Test
 	public void deveMostrarCreditosDeDisciplinaDeQualquerPeriodo() {
