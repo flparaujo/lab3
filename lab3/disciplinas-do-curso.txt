@@ -53,3 +53,9 @@ Ingles, 4, 4, OPTATIVA, ComEliminacao, 1, -
 Expressao Grafica, 4, 3, OPTATIVA, Convencional, 1, -
 Realidade Virtual, 4, 3, OPTATIVA, Convencional, 1, -
 Empreendedorismo 1, 4, 3, OPTATIVA, Convencional, 1, -
+Administracao Financeira, 4, 3, OPTATIVA, Convencional, 1, -
+Administracao de Sistemas, 4, 3, OPTATIVA, Convencional, 1, -
+Analise de dados 1, 4, 3, OPTATIVA, Convencional, 1, -
+Arquitetura de Software, 4, 3, OPTATIVA, Convencional, 1, Engenharia de Software 1-Sistemas de Informacao 1
+Desenvolvimento Dirigido a Modelos, 4, 3, OPTATIVA, Convencional, 1, Engenharia de Software 1-
+Desenvolvimento de Aplicacoes Corporativas Avancadas, 4, 3, OPTATIVA, Convencional, 1, Sistemas de Informacao 1-Bancos de Dados 1

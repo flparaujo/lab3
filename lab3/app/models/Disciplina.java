@@ -94,4 +94,19 @@ public class Disciplina implements Comparable<Disciplina> {
 		return this.getNome().compareTo(outraDisciplina.getNome());
 	}
 
+	
+	/**
+	 * Recupera uma string com a lista de disciplinas pre-requisito da disciplina.
+	 * @return a lista contendo as disciplinas pre-requisito.
+	 */
+	public String getPreRequisitosToString() {
+		String result = "";
+		String[] aux = this.preRequisitos.toString().split("");
+		for (int i = 0; i < aux.length; i++) {
+			if (!aux[i].equals("]") && !aux[i].equals("[")) {
+				result += aux[i];
+			}
+		}
+		return result;
+	}
 }
