@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * Classe que representa a grade curricular do curso.
  * 
- * @author Felipe Araujo de Andrade
+ * 
  * @version 1.2
  */
 public class GradeCurricular {

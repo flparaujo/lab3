@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * Classe responsavel por gerenciar informacoes sobre disciplinas, contidas em um arquivo.
  * 
- * @author Felipe Araujo de Andrade
+ * 
  * @version 1.0
  */
 public class LeitorDeDisciplinas {

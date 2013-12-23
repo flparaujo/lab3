@@ -5,7 +5,7 @@ package exceptios;
  * 
  * Exemplo: alocar disciplina sem todos os pre-requisitos satisfeitos.
  * 
- * @author Felipe Andrade.
+ * 
  *
  */
 public class AlocacaoInvalidaException extends Exception {

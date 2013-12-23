@@ -8,7 +8,7 @@ import javax.naming.LimitExceededException;
 /**
  * Classe que representa um periodo de curso.
  * 
- * @author Felipe Araujo de Andrade, Franklin Wesley Bastos.
+ * 
  * @version 1.1
  */
 public class Periodo {

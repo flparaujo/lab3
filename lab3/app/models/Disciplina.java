@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Classe que representa uma disciplina.
  * 
- * @author Felipe Araujo de Andrade, Franklin Wesley Bastos.
+ * 
  * @version 1.0
  */
 public class Disciplina implements Comparable<Disciplina> {
