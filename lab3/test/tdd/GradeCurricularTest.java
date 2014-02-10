@@ -8,12 +8,15 @@ import models.GradeCurricular;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Testes para a classe GradeCurricular
+ */
 public class GradeCurricularTest {
 
 	private GradeCurricular gradeCurricular;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		gradeCurricular = new GradeCurricular();
 	}
 

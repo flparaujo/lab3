@@ -1,9 +1,7 @@
 package controllers;
 
-import javax.naming.LimitExceededException;
-
-
-import exceptios.AlocacaoInvalidaException;
+import exceptions.AlocacaoInvalidaException;
+import exceptions.LimiteDeCreditosExcedidoException;
 import form.FormHandler;
 import play.data.Form;
 import play.mvc.*;
@@ -19,8 +17,8 @@ public class Application extends Controller {
     }
     
     public static Result planejamentoDeCurso() {
-    	String tempMsg = message; //pega a mensagem vinda do redirect anterior
-    	message = ""; //'reseta' a mensagem de erro. Pra nao ficar dando erro direto.
+    	String tempMsg = message; 
+    	message = ""; 
     	return ok(views.html.index.render(sistema, formHandler, tempMsg));
     }
     
@@ -38,7 +36,7 @@ public class Application extends Controller {
     		sistema.adicionaDisciplinaAoPeriodo(idPeriodo, form.get().getInputNameDisciplina(), 
     				numeroDeCreditos);
     	}
-    	catch(AlocacaoInvalidaException | LimitExceededException e) {
+    	catch(AlocacaoInvalidaException | LimiteDeCreditosExcedidoException e) {
     		 message = e.getMessage();
     	}
     	return redirect(routes.Application.planejamentoDeCurso());

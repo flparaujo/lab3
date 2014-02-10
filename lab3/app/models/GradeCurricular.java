@@ -58,6 +58,10 @@ public class GradeCurricular {
 		return null;
 	}
 	
+	/**
+	 * Adiciona uma disciplina a Grade.
+	 * @param nome O nome da disciplina a ser adicionada.
+	 */
 	public void adicionaDisciplina(String nome) {
 		List<Disciplina> preRequisitos = new ArrayList<Disciplina>();
 		int numeroDeCreditos = leitorDeDisciplinas.getNumeroDeCreditosDeDisciplina(nome);

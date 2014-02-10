@@ -3,7 +3,7 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.LimitExceededException;
+import exceptions.LimiteDeCreditosExcedidoException;
 
 /**
  * Classe que representa um periodo de curso.
@@ -44,9 +44,10 @@ public class Periodo {
 	 * Adiciona uma disciplina a este periodo.
 	 * @param nome O nome da disciplina a ser adicionada.
 	 * @param numeroDeCreditos O numero de creditos da disciplina a ser adicionada.
-	 * @throws LimitExceededException quando a tentativa de adicionar a disciplina ultrapassa o limite maximo de creditos.
+	 * @throws LimiteDeCreditosExcedidoException quando a tentativa de adicionar a 
+	 * disciplina ultrapassa o limite maximo de creditos.
 	 */
-	public void adicionaDisciplina(String nome, int numeroDeCreditos) throws LimitExceededException {
+	public void adicionaDisciplina(String nome, int numeroDeCreditos) throws LimiteDeCreditosExcedidoException {
 		//CREATOR: classe Periodo registra objetos do tipo Disciplina
 		adicionaDisciplina(nome, numeroDeCreditos, new ArrayList<Disciplina>());
 	}
@@ -57,23 +58,20 @@ public class Periodo {
 	 * @param numeroDeCreditos O numero de creditos da disciplina.
 	 * @param preRequisitos A lista contendo as disciplinas pre-requisito da disciplina a ser adicionada.
 	 * @return true se a disciplina foi adicionada, false caso contrario.
-	 * @throws LimitExceededException quando a tentativa de adicionar a disciplina ultrapassa o limite maximo de creditos.
+	 * @throws LimiteDeCreditosExcedidoException quando a tentativa de adicionar a disciplina ultrapassa 
+	 * o limite maximo de creditos.
 	 */
-	public boolean adicionaDisciplina(String nome, int numeroDeCreditos, List<Disciplina> preRequisitos) 
-			throws LimitExceededException {
+	public void adicionaDisciplina(String nome, int numeroDeCreditos, List<Disciplina> preRequisitos) 
+			throws LimiteDeCreditosExcedidoException {
 		//CREATOR: classe Periodo registra objetos do tipo Disciplina
 		Disciplina disciplina = new Disciplina(nome, numeroDeCreditos, preRequisitos);
 		if (!disciplinas.contains(disciplina)) {
 			if ((getNumeroDeCreditos() + numeroDeCreditos) > MAXIMO_DE_CREDITOS) {
-				throw new LimitExceededException("Nao foi possivel alocar " + nome + ". Limite maximo eh " +
-						"de "+MAXIMO_DE_CREDITOS+" creditos!");
+				throw new LimiteDeCreditosExcedidoException();
 			}
-			return disciplinas.add(disciplina);
+			disciplinas.add(disciplina);
 		}
-		return false;
 	}
-	
-	//public Disciplina removeDisciplina()
 
 	/**
 	 * Obtem o numero de creditos do periodo.

@@ -7,19 +7,17 @@ import models.LeitorDeDisciplinas;
 import org.junit.Before;
 import org.junit.Test;
 
-public class leitorDeDisciplinasTest {
+/**
+ * Testes para a classe LeitorDeDisciplinas
+ *
+ */
+public class LeitorDeDisciplinasTest {
 
 	private LeitorDeDisciplinas leitorDeDisciplinas;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		leitorDeDisciplinas = LeitorDeDisciplinas.getInstance();
-	}
-
-	@Test
-	public void deveMostrarInformacoesDeDisciplinasDoArquivoOrdenadas() {
-		assertEquals("Administracao-4", leitorDeDisciplinas.getInformacoesDasDisciplinas()[0]);
-		assertEquals("Compiladores-4", leitorDeDisciplinas.getInformacoesDasDisciplinas()[11]);
 	}
 	
 	@Test

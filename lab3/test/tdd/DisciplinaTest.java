@@ -6,6 +6,10 @@ import models.Disciplina;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Testes para a classe Disciplina
+ *
+ */
 public class DisciplinaTest {
 	
 	private Disciplina disciplina;

@@ -2,22 +2,25 @@ package tdd;
 
 import static org.junit.Assert.*;
 
-import javax.naming.LimitExceededException;
-
 import models.Disciplina;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import controllers.SistemaDePlanejamentoDeCurso;
-import exceptios.AlocacaoInvalidaException;
+import exceptions.AlocacaoInvalidaException;
+import exceptions.LimiteDeCreditosExcedidoException;
 
+/**
+ * Testes para a classe SistemaDePlanejamentoDeCurso
+ *
+ */
 public class SistemaDePlanejamentoDeCursoTest {
 
 	private SistemaDePlanejamentoDeCurso sistema;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 	   sistema = new SistemaDePlanejamentoDeCurso();
 	}
 
@@ -46,8 +49,10 @@ public class SistemaDePlanejamentoDeCursoTest {
 		sistema.adicionaPeriodo();
 		try {
 			sistema.adicionaDisciplinaAoPeriodo(1, "Banco de Dados 1", 4);
+			fail("Esperava excecao de nao poder alocar disciplina que tem " +
+					"pre-requisito(s) nao satisfeito(s)");
 		} catch (AlocacaoInvalidaException e) {
-			assertEquals("Nao pode alocar Banco de Dados 1 ao 2º periodo. Ha " +
+			assertEquals("Nao pode alocar essa disciplina ao periodo. Ha " +
 					"pre-requisito(s) nao satisfeito(s).", e.getMessage());
 		}
 	}
@@ -59,8 +64,10 @@ public class SistemaDePlanejamentoDeCursoTest {
 		sistema.adicionaDisciplinaAoPeriodo(2, "Gerencia da Informacao", 4);
 	    try {
 			sistema.adicionaDisciplinaAoPeriodo(1, "Sistemas de Informacao 1", 4);
+			fail("Esperava excecao de nao poder alocar disciplina que tem pre-requisito(s)" +
+					" nao satisfeito(s)");
 		} catch (AlocacaoInvalidaException e) {
-			assertEquals("Nao pode alocar Sistemas de Informacao 1 ao 2º periodo. Ha " +
+			assertEquals("Nao pode alocar essa disciplina ao periodo. Ha " +
 					"pre-requisito(s) nao satisfeito(s).", e.getMessage());
 		}
 	}
@@ -78,9 +85,11 @@ public class SistemaDePlanejamentoDeCursoTest {
 		sistema.adicionaDisciplinaAoPeriodo(1, "Empreendedorismo 1", 4);
 		try {
 			sistema.adicionaDisciplinaAoPeriodo(1, "Expressao Grafica", 4);
+			fail("Esperava excecao de nao poder alocar disciplina ultrapassando o " +
+					"limite de 28 creditos");
 		}
-		catch(LimitExceededException e) {
-			assertEquals("Nao foi possivel alocar Expressao Grafica. Limite maximo eh " +
+		catch(LimiteDeCreditosExcedidoException e) {
+			assertEquals("Nao foi possivel alocar a disciplina. Limite maximo eh " +
 					"de 28 creditos!", e.getMessage());
 		}
 	}
