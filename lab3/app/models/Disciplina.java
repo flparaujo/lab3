@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class Disciplina implements Comparable<Disciplina> {
 	
+	private int dificuldade = 0;
 	private String nome;
 	private int numeroDeCreditos;
 	// INFORMATION EXPERT: Disciplinas tem a responsabilidade de saber seus pre-requisitos.	
@@ -38,6 +39,14 @@ public class Disciplina implements Comparable<Disciplina> {
 		this.preRequisitos =  preRequisitos;
 	}
 
+	/**
+	 * Recupera a dificuldade da disciplina
+	 * @return a dificuldade da disciplina
+	 */
+	public int getDificuldade () {
+		return this.dificuldade;
+	}
+	
 	/**
 	 * Recupera o nome da disciplina.
 	 * @return o nome da disciplina.

@@ -26,47 +26,27 @@
         				<center>
         					<img src="assets/images/estudos.jpg" class="img-polaroid" style="width:450; height:280px;">
         				</center>
-        				<br>
-        				<br>
-        				<hr>
-        				<h2 class="shadows">Grade Curricular</h2>
-        				<form name="contactformfree" method="post" action="free_process.php" onSubmit="return validate.check(this)">
-							<table width="400px" class="cffree">
-								<tr>
-	 								<td colspan="2"></td>
-								</tr>
-								<div id="gradeCurricular">
-									<table class="table table-hover">
-            	       					<tr style="background-color: #8B8B7A;">
-                	       					<th >Disciplina</td>
-                    	   					<th >Creditos</td>
-                       						<th >Requisitos</td>
-          	     						</tr>
-        								@for(disciplina <- sistema.listaDisciplinasDoCurso()){
-            								<tr>
-                    							<td >@disciplina.getNome()</td>
-                    							<td >@disciplina.getNumeroDeCreditos()</td>
-                 					   			<td >@disciplina.getPreRequisitosToString()</td>                
-            								</tr>
-        								}
-    								</table>
-								</div>
-							</table>
-        				</form>
       				</article>
 					<aside>
+						<br>
+						<br>
+						<br>
         				<hgroup>
          					<h1>Bem-vindo ao Meu Curso</h1>
+         					<br>
           					<h2>Planeje seu curso com facilidade e rapidez.</h2>
         				</hgroup>
 						<br>
-						<br>
-						<br>
-						<br>
-						<br>
-    		    		<br>
-        				<br>
- 	      			 	<h2>Periodos</h2>
+    					<br>
+    					<br>
+    					<br>
+    					<br>
+    					<br>
+    					<br>
+    				</aside> 				
+    					<font color="black" size=12>Periodos</font>
+    	    			<br>
+    	    			<br>
     	    			<br>
         				Planeje seus periodos aqui. 
 						<div id="colunas">
@@ -87,6 +67,8 @@
 			  					}	
 			  					<br>
 		 		 				<nome> Total de créditos: @sistema.numeroDeCreditosDoPeriodo(sistema.getPeriodos.indexOf(periodo))</nome>
+		 		 				<br>
+		 		 				<nome> Dificuldade do Período: @sistema.dificuldadeDoPeriodo(sistema.getPeriodos.indexOf(periodo))</nome>
 		   						@if(sistema.periodoComCreditosAbaixoDoLimiteMinimo(sistema.getPeriodos().indexOf(periodo))) {
 									<br>
 									<nome>Aviso: Mínimo de creditos não atingido</nome>
@@ -159,7 +141,38 @@
 								}
 	    					}	
     					</div>
-    				</aside> 
+    					<br>
+    					<br>
+    					<br>
+    					<hr>
+    					<font color="black" size=12>Grade Curricular</font>
+    					<br>
+    					<br>
+    					<br>
+        				<form name="contactformfree" method="post" action="free_process.php" onSubmit="return validate.check(this)">
+							<table width="400px" class="cffree">
+								<tr>
+	 								<td colspan="2"></td>
+								</tr>
+								<div id="gradeCurricular">
+									<table class="table table-hover">
+            	       					<tr style="background-color: #8B8B7A;">
+                	       					<th >Disciplina</td>
+                    	   					<th >Creditos</td>
+                       						<th >Requisitos</td>
+          	     						</tr>
+        								@for(disciplina <- sistema.listaDisciplinasDoCurso()){
+            								<tr>
+                    							<td >@disciplina.getNome()</td>
+                    							<td >@disciplina.getNumeroDeCreditos()</td>
+                 					   			<td >@disciplina.getPreRequisitosToString()</td>                
+            								</tr>
+        								}
+    								</table>
+								</div>
+							</table>
+        				</form>
+        				
     			</div>
 			</div>
 		</div>

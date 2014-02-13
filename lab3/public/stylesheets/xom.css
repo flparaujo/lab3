@@ -17,17 +17,9 @@ h2 {
 	text-shadow: -1px 0 1px  #fff;
 	color: #FEFEFE;
 }
-h3 {
-	font-size: 18px;
-	color: #FEFEFE;
-	border-top-width: 1px;
-	border-top-style: dotted;
-	border-bottom-style: dashed;
-	border-top-color: #FEFEFE;
-	border-bottom-color: #FEFEFE;
-	border-bottom-width: 1px;
-	
-
+h3 {	
+	font-size: 24px;
+	color: #000000;	
 }
 h4 {
 	font-size: 16px;

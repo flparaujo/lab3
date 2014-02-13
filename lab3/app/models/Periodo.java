@@ -118,4 +118,16 @@ public class Periodo {
 		}
 		return null;
 	}
+	
+	/**
+	 * Recupera a dificuldade do período
+	 * @return a dificuldade do período
+	 */
+	public int getDificuldadeDoPeriodo () {
+		int result = 0;
+		for(Disciplina disciplina : disciplinas) {
+			result += disciplina.getDificuldade();
+		}
+		return result;
+	}
 }

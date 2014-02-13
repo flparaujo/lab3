@@ -28,6 +28,10 @@ public class SistemaDePlanejamentoDeCurso {
 		handlerDisciplinas = new ArrayList<Disciplina>();
 	}
 	
+	public int dificuldadeDoPeriodo (int indicePeriodo) {
+		return getPeriodo(indicePeriodo).getDificuldadeDoPeriodo();
+	}
+	
 	/**
 	 * Obtem uma lista de todas as disciplinas do curso.
 	 * @return uma lista com as disciplinas do curso.

@@ -3,6 +3,10 @@ package models;
 import java.io.*;
 import java.util.*;
 
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.input.SAXBuilder;
+
 //PURE FABRICATION: a classe LeitorDeDisciplinas nao representa algo do dominio do problema, serve pra manter a alta coesao da GradeCurricular.
 /**
  * Classe responsavel por gerenciar informacoes sobre disciplinas, contidas em um arquivo.
@@ -12,16 +16,43 @@ import java.util.*;
  */
 public class LeitorDeDisciplinas {
 	
+	private Map<Integer, Disciplina> disciplinas;
 	private Map<String, List<String>> mapa;
 	private static LeitorDeDisciplinas instancia;
 	
 	private LeitorDeDisciplinas() {
 		mapa = new HashMap<String, List<String>>();
+		disciplinas = new HashMap<Integer, Disciplina>();
 		try {
 			carregaDisciplinasDoArquivo();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@SuppressWarnings({ "unchecked"})
+	private void lerArquivo () {
+		Document doc = null;
+        SAXBuilder builder = new SAXBuilder();
+        try {
+              doc = builder.build("disciplinas-do-curso.xml");
+        } catch (Exception e) {
+              e.printStackTrace();
+        }           
+        List<Element> lista = doc.getRootElement().getChildren();
+        for (Element e: lista ){
+        	disciplinas.put(Integer.parseInt(e.getAttributeValue("id")), criaDisciplina(e));
+        }           
+	}
+	
+	private Disciplina criaDisciplina (Element e) {
+		List<Disciplina> requisitos = new ArrayList<Disciplina>();
+		String[] r = e.getAttributeValue("requisitos").split("");
+		for (int i = 0; i < r.length; i++) {
+			requisitos.add(disciplinas.get(r[i]));
+		}
+		Disciplina disciplina = new Disciplina(e.getAttributeValue("name"), Integer.parseInt(e.getChildText("creditos")), requisitos);
+		return disciplina;
 	}
 	
 	private void carregaDisciplinasDoArquivo() throws IOException {
