@@ -1,6 +1,9 @@
 package tdd;
 
 import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+
 import models.Disciplina;
 
 import org.junit.Before;
@@ -16,7 +19,7 @@ public class DisciplinaTest {
 
 	@Before
 	public void setUp() {
-		disciplina = new Disciplina("Programacao 1", 4);
+		disciplina = new Disciplina("Programacao 1", 4, new ArrayList<Disciplina>(), 5);
 	}
 
 	@Test

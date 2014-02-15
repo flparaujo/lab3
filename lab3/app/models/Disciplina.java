@@ -1,6 +1,5 @@
 package models;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,7 +10,7 @@ import java.util.List;
  */
 public class Disciplina implements Comparable<Disciplina> {
 	
-	private int dificuldade = 0;
+	private int dificuldade;
 	private String nome;
 	private int numeroDeCreditos;
 	// INFORMATION EXPERT: Disciplinas tem a responsabilidade de saber seus pre-requisitos.	
@@ -19,24 +18,16 @@ public class Disciplina implements Comparable<Disciplina> {
 
 	/**
 	 * Construtor de uma disciplina.
-	 * Constroi uma disciplina sem pre-requisitos.
-	 * @param nome O nome da disciplina.
-	 * @param numeroDeCreditos O numero de creditos da disciplina.
-	 */
-	public Disciplina(String nome, int numeroDeCreditos) {
-		this(nome, numeroDeCreditos, new ArrayList<Disciplina> ());
-	}
-	
-	/**
-	 * Construtor de uma disciplina.
 	 * @param nome O nome da disciplina.
 	 * @param numeroDeCreditos O numero de creditos da disciplina.
 	 * @param preRequisitos A lista de disciplinas pre-requisitos da disciplina.
+	 * @param dificuldade A dificuldade da disciplina.
 	 */
-	public Disciplina(String nome, int numeroDeCreditos, List<Disciplina> preRequisitos) {
+	public Disciplina(String nome, int numeroDeCreditos, List<Disciplina> preRequisitos, int dificuldade) {
 		this.nome = nome;
 		this.numeroDeCreditos = numeroDeCreditos;
 		this.preRequisitos =  preRequisitos;
+		this.dificuldade = dificuldade;
 	}
 
 	/**
@@ -82,7 +73,8 @@ public class Disciplina implements Comparable<Disciplina> {
 			return false;
 		}
 		return ((Disciplina) obj).getNome().equals(nome) 
-				&& ((Disciplina) obj).getNumeroDeCreditos() == numeroDeCreditos;
+				&& ((Disciplina) obj).getNumeroDeCreditos() == numeroDeCreditos 
+				&& ((Disciplina) obj).getPreRequisitos().equals(getPreRequisitos());
 	}
 	
 	/**

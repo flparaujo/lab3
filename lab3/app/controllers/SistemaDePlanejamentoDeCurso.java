@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exceptions.*;
-
-
 import models.*;
 
 /**
@@ -14,6 +12,7 @@ import models.*;
  */
 public class SistemaDePlanejamentoDeCurso {
 	
+	private final int NUMERO_DE_CREDITOS_DO_1_PERIODO = 6;
 	private List<Periodo> periodos;
 	private GradeCurricular grade;
 	private List<Disciplina> handlerDisciplinas;
@@ -24,7 +23,11 @@ public class SistemaDePlanejamentoDeCurso {
 	public SistemaDePlanejamentoDeCurso() {
 		this.periodos = new ArrayList <Periodo>();
 		this.grade = new GradeCurricular();
-		primeiroPeriodo(); 
+		try {
+			primeiroPeriodo();
+		} catch (LimiteDeCreditosExcedidoException e) {
+			e.printStackTrace();
+		} 
 		handlerDisciplinas = new ArrayList<Disciplina>();
 	}
 	
@@ -65,7 +68,7 @@ public class SistemaDePlanejamentoDeCurso {
 	 * @return o numero de creditos do periodo.
 	 */
 	public int numeroDeCreditosDoPeriodo(int indicePeriodo) {
-		return getPeriodo(indicePeriodo).getNumeroDeCreditos(); 
+		return getPeriodo(indicePeriodo).getNumeroDeCreditosDoPeriodo(); 
 	}
 	
 	
@@ -93,11 +96,10 @@ public class SistemaDePlanejamentoDeCurso {
 	 * @throws AlocacaoInvalidaException 
 	 * @throws LimiteDeCreditosExcedidoException
 	 */
-	public void adicionaDisciplinaAoPeriodo(int indicePeriodo, String nome, int numeroDeCreditos) 
+	public void adicionaDisciplinaAoPeriodo(int indicePeriodo, String nome) 
 			throws AlocacaoInvalidaException, LimiteDeCreditosExcedidoException {
 		if(grade.getDisciplina(nome) != null) {
-			adicionarDisciplinaSePreRequisitosSatisfeitos(indicePeriodo, nome, numeroDeCreditos, 
-					grade.getDisciplina(nome).getPreRequisitos());
+			adicionarDisciplinaSePreRequisitosSatisfeitos(indicePeriodo, grade.getDisciplina(nome));
 			grade.retiraDisciplina(nome);
 		}
 	}
@@ -174,12 +176,11 @@ public class SistemaDePlanejamentoDeCurso {
 		return alocadas;
 	}
 	
-	private void adicionarDisciplinaSePreRequisitosSatisfeitos(int indicePeriodo, String nome, 
-			int numeroDeCreditos, List<Disciplina> preRequisitos) throws AlocacaoInvalidaException, LimiteDeCreditosExcedidoException {
-		if (! preRequisitosSatisfeitos(indicePeriodo, preRequisitos)) {	
+	private void adicionarDisciplinaSePreRequisitosSatisfeitos(int indicePeriodo, Disciplina disciplina) throws AlocacaoInvalidaException, LimiteDeCreditosExcedidoException {
+		if (!preRequisitosSatisfeitos(indicePeriodo, disciplina.getPreRequisitos())) {	
 			throw new AlocacaoInvalidaException();
 		}
-		getPeriodo(indicePeriodo).adicionaDisciplina(nome, numeroDeCreditos, preRequisitos);
+		getPeriodo(indicePeriodo).adicionaDisciplina(disciplina);
 	}
 	
 	private void removeDisciplina(String nomeDaDisciplina) {
@@ -192,25 +193,16 @@ public class SistemaDePlanejamentoDeCurso {
 		
 	}
 	
-	private void primeiroPeriodo() {
+	private void primeiroPeriodo() throws LimiteDeCreditosExcedidoException {
 		getPeriodos().add(new Periodo());
 		alocaDisciplinasDoPrimeiroPeriodo();
 	}
 	
-	private void alocaDisciplinasDoPrimeiroPeriodo() {
-		String[] nomesDasDisciplinas = {"Calculo Dif. e Int. 1", "Algebra Vet. e Geom. Analitica", 
-				"Lab. de Programacao 1", "Programacao 1", 
-		"Introducao a Computacao"};
-		
-		for(String nome : nomesDasDisciplinas) {
-			int numeroDeCreditos = grade.getDisciplina(nome).getNumeroDeCreditos();
-			try {
-				getPeriodos().get(0).adicionaDisciplina(nome, numeroDeCreditos);
-			} catch (LimiteDeCreditosExcedidoException e) {
-				e.printStackTrace();
-			}
-			grade.retiraDisciplina(nome);
-		}	
+	private void alocaDisciplinasDoPrimeiroPeriodo() throws LimiteDeCreditosExcedidoException {
+		for (int i = 0; i < NUMERO_DE_CREDITOS_DO_1_PERIODO; i++) {
+			getPeriodos().get(0).adicionaDisciplina(grade.getDisciplina(i));
+			grade.retiraDisciplina(grade.getDisciplina(i));
+		}
 	}
 	
 	private boolean preRequisitosSatisfeitos(int indicePeriodo, List<Disciplina> preRequisitos) {

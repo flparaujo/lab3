@@ -45,6 +45,15 @@ public class GradeCurricular {
 	}
 	
 	/**
+	 * Obtem uma disciplina qualquer da grade curricular pelo indice.
+	 * @param indice O indice da disciplina a ser obtida.
+	 * @return A disciplina, se estiver na grade.
+	 */
+	public Disciplina getDisciplina(int indice) {
+		return disciplinas.get(indice);
+	}
+	
+	/**
 	 * Obtém uma disciplina removendo-a da grade curricular.
 	 * @param nome O nome da disciplina.
 	 * @return a disciplina.
@@ -59,29 +68,28 @@ public class GradeCurricular {
 	}
 	
 	/**
+	 * Obtém uma disciplina removendo-a da grade curricular.
+	 * @param disciplina A disciplina a ser removida.
+	 * @return a disciplina.
+	 */
+	public Disciplina retiraDisciplina(Disciplina disciplina) {
+		return disciplinas.remove(disciplinas.indexOf(disciplina));
+	}
+	
+	/**
 	 * Adiciona uma disciplina a Grade.
 	 * @param nome O nome da disciplina a ser adicionada.
 	 */
 	public void adicionaDisciplina(String nome) {
-		List<Disciplina> preRequisitos = new ArrayList<Disciplina>();
-		int numeroDeCreditos = leitorDeDisciplinas.getNumeroDeCreditosDeDisciplina(nome);
-		geraPreRequisitosDeDisciplina(nome, preRequisitos);
-		disciplinas.add(new Disciplina(nome, numeroDeCreditos, preRequisitos));
+		List<Disciplina> aux = leitorDeDisciplinas.getInformacoesDasDisciplinas();
+		for (Disciplina disciplina: aux) {
+			if (disciplina.getNome().equals(nome)) {
+				disciplinas.add(disciplina);
+			}
+		}
 	}
 	
 	private void geraDisciplinas() {
-		for(String info : leitorDeDisciplinas.getInformacoesDasDisciplinas()) {
-			String nome = info.split("-")[0];
-			adicionaDisciplina(nome);
-		}
-	}
-	
-	private void geraPreRequisitosDeDisciplina(String nome,
-			List<Disciplina> preRequisitos) {
-		for(String nomeDePreRequisto : leitorDeDisciplinas.getNomesDosPreRequisitosDeDisciplina(nome)) {
-			//CREATOR: grade curricular é feita de disciplinas
-			preRequisitos.add(new Disciplina(nomeDePreRequisto, leitorDeDisciplinas.
-					getNumeroDeCreditosDeDisciplina(nomeDePreRequisto)));
-		}
+		disciplinas = leitorDeDisciplinas.getInformacoesDasDisciplinas();
 	}
 }

@@ -1,11 +1,18 @@
 package models;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.input.SAXBuilder;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 //PURE FABRICATION: a classe LeitorDeDisciplinas nao representa algo do dominio do problema, serve pra manter a alta coesao da GradeCurricular.
 /**
@@ -17,67 +24,53 @@ import org.jdom.input.SAXBuilder;
 public class LeitorDeDisciplinas {
 	
 	private Map<Integer, Disciplina> disciplinas;
-	private Map<String, List<String>> mapa;
 	private static LeitorDeDisciplinas instancia;
 	
 	private LeitorDeDisciplinas() {
-		mapa = new HashMap<String, List<String>>();
 		disciplinas = new HashMap<Integer, Disciplina>();
-		try {
-			carregaDisciplinasDoArquivo();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		lerArquivo();
 	}
 	
-	@SuppressWarnings({ "unchecked"})
 	private void lerArquivo () {
-		Document doc = null;
-        SAXBuilder builder = new SAXBuilder();
-        try {
-              doc = builder.build("disciplinas-do-curso.xml");
-        } catch (Exception e) {
-              e.printStackTrace();
-        }           
-        List<Element> lista = doc.getRootElement().getChildren();
-        for (Element e: lista ){
-        	disciplinas.put(Integer.parseInt(e.getAttributeValue("id")), criaDisciplina(e));
-        }           
-	}
-	
-	private Disciplina criaDisciplina (Element e) {
-		List<Disciplina> requisitos = new ArrayList<Disciplina>();
-		String[] r = e.getAttributeValue("requisitos").split("");
-		for (int i = 0; i < r.length; i++) {
-			requisitos.add(disciplinas.get(r[i]));
-		}
-		Disciplina disciplina = new Disciplina(e.getAttributeValue("name"), Integer.parseInt(e.getChildText("creditos")), requisitos);
-		return disciplina;
-	}
-	
-	private void carregaDisciplinasDoArquivo() throws IOException {
-		BufferedReader inputStream = null;
+		File fXmlFile = new File("disciplinas-do-curso.xml");
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = null;
 		try {
-			inputStream = new BufferedReader(new FileReader("disciplinas-do-curso.txt"));
-			String line;
-			while ((line = inputStream.readLine()) != null) {
-				String[] dados = line.split(", ");
-				mapa.put(dados[0]+"-"+dados[1], new ArrayList<String> ());
-				String[] nomesDosPreRequisitos = dados[6].split("-");
-				for(String nomeDoPreRequisito : nomesDosPreRequisitos) {
-					mapa.get(dados[0]+"-"+dados[1]).add(nomeDoPreRequisito);
-				}
-			}
-		} 
-		catch (FileNotFoundException e) {
+			dBuilder = dbFactory.newDocumentBuilder();
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		finally {
-			if (inputStream != null) {
-				inputStream.close();
+		Document doc = null;
+		try {
+			doc = dBuilder.parse(fXmlFile);
+		} catch (SAXException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		doc.getDocumentElement().normalize();
+		NodeList nList = doc.getElementsByTagName("cadeira");
+		for (int temp = 0; temp < nList.getLength(); temp++) {
+			Node nNode = nList.item(temp);
+			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+				criaDisciplina(nNode);
 			}
 		}
-	} 
+	}
+	
+	private void criaDisciplina (Node nNode) {
+		List<Disciplina> requisitos = new ArrayList<Disciplina>();
+		Element cadeira = (Element) nNode;
+		NodeList preRequisitos = cadeira.getElementsByTagName("id");
+		for (int i = 0; i < preRequisitos.getLength(); i++) {
+			requisitos.add(disciplinas.get(Integer.parseInt(preRequisitos.item(i).getTextContent())));
+		}
+		Disciplina disciplina = new Disciplina(cadeira.getAttribute("nome"), 
+				Integer.parseInt(cadeira.getElementsByTagName("creditos").item(0).getTextContent()),
+				requisitos,
+				Integer.parseInt(cadeira.getElementsByTagName("dificuldade").item(0).getTextContent()));
+		disciplinas.put(Integer.parseInt(cadeira.getAttribute("id")), disciplina);
+	}
 	
 	/**
 	 * Obtem uma unica instancia deste leitor de disciplinas.
@@ -96,35 +89,12 @@ public class LeitorDeDisciplinas {
 	 * Cada informacao eh apresentada no formato "nome da disciplina-numero de creditos".
 	 * @return um array de strings, onde cada string contem informacoes basicas de uma disciplina.
 	 */
-	public String[] getInformacoesDasDisciplinas() {
-		String[] informacoes = mapa.keySet().toArray(new String[mapa.keySet().size()]);
+	public List<Disciplina> getInformacoesDasDisciplinas() {
+		List<Disciplina> informacoes = new ArrayList<Disciplina>();
+		for (int i = 1; i <= disciplinas.size(); i++) {
+			informacoes.add(disciplinas.get(i));
+		}
 		return informacoes;
-	}
-	
-	/**
-	 * Obtem uma lista dos nomes dos pre-requisitos de uma disciplina.
-	 * @param nomeDaDisciplina O nome da disciplina da qual se quer obter os nomes dos pre-requisitos.
-	 * @return a lista de strings, que sao os nomes dos pre-requisitos.
-	 */
-	public List<String> getNomesDosPreRequisitosDeDisciplina(String nomeDaDisciplina) {
-		for(String informacaoDeDisciplina : mapa.keySet()) {
-			if(informacaoDeDisciplina.split("-")[0].equals(nomeDaDisciplina))
-				return mapa.get(informacaoDeDisciplina);
-		}
-		return null;
-	}
-	
-	/**
-	 * Obtem o total de creditos de uma disciplina do arquivo.
-	 * @param nomeDaDisciplina O nome da disciplina.
-	 * @return a quantidade de creditos da disciplina.
-	 */
-	public int getNumeroDeCreditosDeDisciplina(String nomeDaDisciplina) {
-		for(int i = 0; i < getInformacoesDasDisciplinas().length; i++) {
-			if(getInformacoesDasDisciplinas()[i].split("-")[0].equals(nomeDaDisciplina))
-				return Integer.parseInt(getInformacoesDasDisciplinas()[i].split("-")[1]);
-		}
-		return 0;
 	}
 
 }

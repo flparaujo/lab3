@@ -29,12 +29,9 @@ public class Application extends Controller {
     
     public static Result adicionaDisciplinaEmPeriodo() {
     	Form<FormHandler> form = formHandler.bindFromRequest();
-    	int numeroDeCreditos = sistema.getDisciplinaDaGrade(form.get().getInputNameDisciplina()).
-    			getNumeroDeCreditos();
     	int idPeriodo = form.get().getIdPeriodo()-1;
     	try {
-    		sistema.adicionaDisciplinaAoPeriodo(idPeriodo, form.get().getInputNameDisciplina(), 
-    				numeroDeCreditos);
+    		sistema.adicionaDisciplinaAoPeriodo(idPeriodo, form.get().getInputNameDisciplina());
     	}
     	catch(AlocacaoInvalidaException | LimiteDeCreditosExcedidoException e) {
     		 message = e.getMessage();

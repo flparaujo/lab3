@@ -42,18 +42,6 @@ public class Periodo {
 
 	/**
 	 * Adiciona uma disciplina a este periodo.
-	 * @param nome O nome da disciplina a ser adicionada.
-	 * @param numeroDeCreditos O numero de creditos da disciplina a ser adicionada.
-	 * @throws LimiteDeCreditosExcedidoException quando a tentativa de adicionar a 
-	 * disciplina ultrapassa o limite maximo de creditos.
-	 */
-	public void adicionaDisciplina(String nome, int numeroDeCreditos) throws LimiteDeCreditosExcedidoException {
-		//CREATOR: classe Periodo registra objetos do tipo Disciplina
-		adicionaDisciplina(nome, numeroDeCreditos, new ArrayList<Disciplina>());
-	}
-	
-	/**
-	 * Adiciona uma disciplina a este periodo.
 	 * @param nome O nome da disciplina.
 	 * @param numeroDeCreditos O numero de creditos da disciplina.
 	 * @param preRequisitos A lista contendo as disciplinas pre-requisito da disciplina a ser adicionada.
@@ -61,12 +49,10 @@ public class Periodo {
 	 * @throws LimiteDeCreditosExcedidoException quando a tentativa de adicionar a disciplina ultrapassa 
 	 * o limite maximo de creditos.
 	 */
-	public void adicionaDisciplina(String nome, int numeroDeCreditos, List<Disciplina> preRequisitos) 
+	public void adicionaDisciplina(Disciplina disciplina) 
 			throws LimiteDeCreditosExcedidoException {
-		//CREATOR: classe Periodo registra objetos do tipo Disciplina
-		Disciplina disciplina = new Disciplina(nome, numeroDeCreditos, preRequisitos);
 		if (!disciplinas.contains(disciplina)) {
-			if ((getNumeroDeCreditos() + numeroDeCreditos) > MAXIMO_DE_CREDITOS) {
+			if ((getNumeroDeCreditosDoPeriodo() + disciplina.getNumeroDeCreditos()) > MAXIMO_DE_CREDITOS) {
 				throw new LimiteDeCreditosExcedidoException();
 			}
 			disciplinas.add(disciplina);
@@ -77,7 +63,7 @@ public class Periodo {
 	 * Obtem o numero de creditos do periodo.
 	 * @return o numero de creditos do periodo.
 	 */
-	public int getNumeroDeCreditos() {
+	public int getNumeroDeCreditosDoPeriodo() {
 	    //INFORMATION EXPERT: Casse Periodo contem disciplinas, que sao o atributo necessario para o calculo do total de creditos
 		int total = 0;
 		for(Disciplina disciplina : disciplinas)
@@ -90,7 +76,7 @@ public class Periodo {
 	 * @return true se esta abaixo do limite minimo de creditos, false caso contrario.
 	 */
 	public boolean abaixoDoLimiteMinimoDeCreditos() {
-		return getNumeroDeCreditos() < Periodo.MINIMO_DE_CREDITOS;
+		return getNumeroDeCreditosDoPeriodo() < Periodo.MINIMO_DE_CREDITOS;
 	}
 
 	/**
