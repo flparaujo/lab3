@@ -2,6 +2,7 @@ package controllers;
 
 import exceptions.AlocacaoInvalidaException;
 import exceptions.LimiteDeCreditosExcedidoException;
+import exceptions.LimiteDePeriodosException;
 import form.FormHandler;
 import play.data.Form;
 import play.mvc.*;
@@ -23,7 +24,11 @@ public class Application extends Controller {
     }
     
     public static Result novoPeriodo() {
-    	sistema.adicionaPeriodo();
+    	try {
+			sistema.adicionaPeriodo();
+		} catch (LimiteDePeriodosException e) {
+			message = e.getMessage();
+		}
     	return redirect(routes.Application.planejamentoDeCurso());
     }
     

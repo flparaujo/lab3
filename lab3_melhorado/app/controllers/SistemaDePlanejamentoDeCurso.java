@@ -12,6 +12,8 @@ import models.*;
  */
 public class SistemaDePlanejamentoDeCurso {
 	
+	private final int MAXIMO_DE_PERIODOS = 14;
+	
 	private List<Periodo> periodos;
 	private GradeCurricular grade;
 	private List<Disciplina> handlerDisciplinas;
@@ -87,8 +89,12 @@ public class SistemaDePlanejamentoDeCurso {
 	//CREATOR: classe SistemaDePlanejamentoDeCurso registra objetos do tipo Periodo
 	/**
 	 * Adiciona um novo periodo.
+	 * @throws LimiteDePeriodosException 
 	 */
-	public void adicionaPeriodo() {
+	public void adicionaPeriodo() throws LimiteDePeriodosException {
+		if (periodos.size() == MAXIMO_DE_PERIODOS) {
+			throw new LimiteDePeriodosException();
+		}
 		periodos.add(new Periodo());
 	}
 	

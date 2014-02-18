@@ -2,6 +2,8 @@ package tdd;
 
 import static org.junit.Assert.*;
 
+import javax.naming.LimitExceededException;
+
 import models.Periodo;
 
 import org.junit.Before;
@@ -10,6 +12,7 @@ import org.junit.Test;
 import controllers.SistemaDePlanejamentoDeCurso;
 import exceptions.AlocacaoInvalidaException;
 import exceptions.LimiteDeCreditosExcedidoException;
+import exceptions.LimiteDePeriodosException;
 
 /**
  * Testes para a classe SistemaDePlanejamentoDeCurso
@@ -158,5 +161,26 @@ public class SistemaDePlanejamentoDeCursoTest {
 		assertEquals(2, sistema.getDisciplinaDaGrade("Teoria dos Grafos").getNumeroDeCreditos());
 	}
 	
-	
+	@Test
+	public void naoPodeAdicionarPeriodoAcimaDoLimite() throws LimiteDePeriodosException {
+		sistema.adicionaPeriodo();
+		sistema.adicionaPeriodo();
+		sistema.adicionaPeriodo();
+		sistema.adicionaPeriodo();
+		sistema.adicionaPeriodo();
+		sistema.adicionaPeriodo();
+		sistema.adicionaPeriodo();
+		sistema.adicionaPeriodo();
+		sistema.adicionaPeriodo();
+		sistema.adicionaPeriodo();
+		sistema.adicionaPeriodo();
+		sistema.adicionaPeriodo();
+		sistema.adicionaPeriodo();
+		try{
+			sistema.adicionaPeriodo();
+			fail("deveria lancar excecao");
+		} catch (LimiteDePeriodosException e) {
+			assertEquals("Limite maximo de periodos atingindo.", e.getMessage());
+		}
+	}
 }
